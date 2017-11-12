@@ -10,7 +10,7 @@ import java.util.Scanner;
 
 public class Main {
 
-    public Main() {
+    public static void main(String[] args) {
         
         boolean cont = true;
         
@@ -30,6 +30,6 @@ public class Main {
             }
         }
         
-    }//end Main
+    }//end main
     
 }//end class Main

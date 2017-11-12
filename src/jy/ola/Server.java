@@ -25,6 +25,7 @@ public class Server {
     public Server() {
         
         Scanner input = new Scanner(new InputStreamReader(System.in));
+        
         System.out.print("Your name: ");
         String name = input.nextLine();
         
@@ -47,6 +48,7 @@ public class Server {
         
         Receiver thread = new Receiver();
         thread.server = true;
+        thread.client = false;
         Thread t = new Thread(thread);
         t.start();
         

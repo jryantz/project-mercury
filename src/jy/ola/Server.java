@@ -1,6 +1,8 @@
 package jy.ola;
 
+import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
@@ -42,6 +44,46 @@ public class Server {
         
         System.out.println("Port: " + port);
         System.out.println("*** CHAT STARTED ***");
+        
+        Receiver thread = new Receiver();
+        Thread t = new Thread(thread);
+        t.start();
+        
+        String[] phases = {"|", "/", "-", "\\"};
+        System.out.printf("Waiting for client to connect... |");
+        while(remPort == 0) {
+            for(String phase : phases) {
+                System.out.printf("\b" + phase);
+                
+                try {
+                    Thread.sleep(100);
+                } catch(InterruptedException e) {}
+            }
+        }
+        
+        byte[] send = new byte[1024];
+        
+        boolean wait = true;
+        do {
+            String message = name + "> " + input.nextLine();
+            
+            if(message.equalsIgnoreCase(name + "> quit")) {
+                socket.close();
+                System.exit(0);
+            }
+            
+            send = message.getBytes();
+            
+            DatagramPacket sendPkt = new DatagramPacket(send, send.length, remAddr, remPort);
+            
+            try {
+                socket.send(sendPkt);
+            } catch (IOException ex) {
+                Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } while(wait == true);
+        
+        thread.quit();
         
     }//end Server
     

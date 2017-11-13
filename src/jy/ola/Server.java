@@ -64,7 +64,7 @@ public class Server {
             }
         }
         
-        byte[] send = new byte[1024];
+        byte[] send;
         
         boolean wait = true;
         do {

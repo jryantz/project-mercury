@@ -12,21 +12,37 @@ public class Main {
 
     public static void main(String[] args) {
         
-        boolean cont = true;
+        boolean dropCont = true;
+        int drop = 0;
         
-        while(cont) {
+        while(dropCont) {
             Scanner input = new Scanner(new InputStreamReader(System.in));
+            
+            System.out.print("Drop Rate[0-99]: ");
+            drop = input.nextInt();
+            
+            if(drop >= 0 && drop <= 99) {
+                dropCont = false;
+            }
+        }
+        
+        boolean nodeCont = true;
+        String choice;
+        
+        while(nodeCont) {
+            Scanner input = new Scanner(new InputStreamReader(System.in));
+            
             System.out.print("Server[s] / Client[c]: ");
-            String choice = input.nextLine();
+            choice = input.nextLine();
             
             if(choice.equalsIgnoreCase("s")) {
-                Node n = new Node(0);
-                cont = false;
+                Node n = new Node(0, drop);
+                nodeCont = false;
             }
             
             if(choice.equalsIgnoreCase("c")) {
-                Node n = new Node(1);
-                cont = false;
+                Node n = new Node(1, drop);
+                nodeCont = false;
             }
         }
         

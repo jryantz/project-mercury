@@ -139,15 +139,17 @@ public class Node {
         
         do {
             
-            int random = (int)(Math.random() * 99);
-            String message = random + "> " + input.nextLine();
+            String message = input.nextLine();
             
             send = message.getBytes();
-
-            try {
-                socket.send(new DatagramPacket(send, send.length, remAddr, remPort));
-            } catch(IOException e) {
-                Logger.getLogger(Node.class.getName()).log(Level.SEVERE, null, e);
+            
+            int random = (int)(Math.random() * 99);
+            if(random >= drop) {
+                try {
+                    socket.send(new DatagramPacket(send, send.length, remAddr, remPort));
+                } catch(IOException e) {
+                    Logger.getLogger(Node.class.getName()).log(Level.SEVERE, null, e);
+                }
             }
             
         } while(cont);

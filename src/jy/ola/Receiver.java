@@ -10,9 +10,9 @@ import java.net.DatagramPacket;
 
 public class Receiver implements Runnable {
     
-    boolean running = true;
-    boolean server = false;
-    boolean client = false;
+    private boolean running = true;
+    public boolean server = false;
+    public boolean client = false;
     
     @Override
     public void run() {

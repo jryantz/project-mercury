@@ -2,7 +2,6 @@ package jy.ola;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
@@ -18,6 +17,8 @@ import java.util.logging.Logger;
  */
 
 public class Node {
+    
+    private static boolean wait = true;
     
     private final boolean server;
     private final boolean client;
@@ -121,7 +122,7 @@ public class Node {
     } // end client
     
     /**
-     * Initialized the sender.
+     * Initializes the sender.
      * 
      * Allows for sending of messages to the other user.
      */
@@ -130,7 +131,7 @@ public class Node {
         Scanner input = new Scanner(new InputStreamReader(System.in));
 
         byte[] send;
-        boolean wait = true;
+        boolean cont = true;
         
         do {
             
@@ -152,7 +153,7 @@ public class Node {
                 Logger.getLogger(Node.class.getName()).log(Level.SEVERE, null, e);
             }
             
-        } while(wait == true);
+        } while(cont);
         
     } // end sender
     
@@ -180,6 +181,7 @@ public class Node {
      */
     private void waiting() {
         
+        wait = true;
         String[] phases = {"|", "/", "-", "\\"};
         
         System.out.printf("Waiting for client to connect... |");
@@ -192,10 +194,23 @@ public class Node {
                     Thread.sleep(100);
                 } catch(InterruptedException e) {}
             }
-        } while(remPort == 0);
+        } while(wait);
         
         System.out.printf("\b" + " ");
         
-    } // end wait
+    } // end waiting
+    
+    /**
+     * Flips the value of the wait variable.
+     */
+    public static void waitflip() {
+        
+        if(wait) {
+            wait = false;
+        } else {
+            wait = true;
+        }
+        
+    } // end waitflip
     
 } // end class Node

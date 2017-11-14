@@ -28,6 +28,12 @@ public class Receiver implements Runnable {
                     Node.socket.receive(receivePkt);
 
                     if(Node.remPort == 0) {
+                        Node.waitflip();
+                        
+                        try {
+                            Thread.sleep(200);
+                        } catch(InterruptedException e) {}
+                        
                         System.out.println("\nClient connected!");
                         Node.remPort = receivePkt.getPort();
                         Node.remAddr = receivePkt.getAddress();

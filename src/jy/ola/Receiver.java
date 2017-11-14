@@ -11,19 +11,17 @@ import java.net.DatagramPacket;
 public class Receiver implements Runnable {
     
     private boolean running = true;
-    public boolean server = false;
-    public boolean client = false;
     
     @Override
     public void run() {
         
-        while(running && (server || client)) {
+        while(running && (Main.server || Main.client)) {
             byte[] receive = new byte[1024];
             
             try {
                 DatagramPacket receivePkt = new DatagramPacket(receive, receive.length);
                 
-                if(server) {
+                if(Main.server) {
                 
                     Server.socket.receive(receivePkt);
 
@@ -35,7 +33,7 @@ public class Receiver implements Runnable {
                     
                 }
                 
-                if(client) {
+                if(Main.client) {
                     
                     Client.socket.receive(receivePkt);
                     

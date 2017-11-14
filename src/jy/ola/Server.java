@@ -47,8 +47,6 @@ public class Server {
         System.out.println("*** CHAT STARTED ***");
         
         Receiver thread = new Receiver();
-        thread.server = true;
-        thread.client = false;
         Thread t = new Thread(thread);
         t.start();
         

@@ -9,6 +9,9 @@ import java.util.Scanner;
  */
 
 public class Main {
+    
+    public static boolean server = false;
+    public static boolean client = false;
 
     public static void main(String[] args) {
         
@@ -21,11 +24,15 @@ public class Main {
             
             if(choice.equalsIgnoreCase("s")) {
                 Server s = new Server();
+                server = true;
+                client = false;
                 cont = false;
             }
                 
             if(choice.equalsIgnoreCase("c")) {
                 Client c = new Client();
+                server = false;
+                client = true;
                 cont = false;
             }
         }

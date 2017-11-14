@@ -52,8 +52,6 @@ public class Client {
         byte[] send;
         
         Receiver thread = new Receiver();
-        thread.server = false;
-        thread.client = true;
         Thread t = new Thread(thread);
         t.start();
         

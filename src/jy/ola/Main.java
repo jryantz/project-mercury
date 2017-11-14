@@ -9,9 +9,6 @@ import java.util.Scanner;
  */
 
 public class Main {
-    
-//    public static boolean server = false;
-//    public static boolean client = false;
 
     public static void main(String[] args) {
         
@@ -23,16 +20,12 @@ public class Main {
             String choice = input.nextLine();
             
             if(choice.equalsIgnoreCase("s")) {
-                Server s = new Server();
-//                server = true;
-//                client = false;
+                Node n = new Node(0);
                 cont = false;
             }
-                
+            
             if(choice.equalsIgnoreCase("c")) {
-                Client c = new Client();
-//                server = false;
-//                client = true;
+                Node n = new Node(1);
                 cont = false;
             }
         }

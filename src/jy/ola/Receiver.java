@@ -25,19 +25,19 @@ public class Receiver implements Runnable {
                 
                 if(server) {
                 
-                    Server.socket.receive(receivePkt);
+                    Node.socket.receive(receivePkt);
 
-                    if(Server.remPort == 0) {
+                    if(Node.remPort == 0) {
                         System.out.println("\nClient connected!");
-                        Server.remPort = receivePkt.getPort();
-                        Server.remAddr = receivePkt.getAddress();
+                        Node.remPort = receivePkt.getPort();
+                        Node.remAddr = receivePkt.getAddress();
                     }
                     
                 }
                 
                 if(client) {
                     
-                    Client.socket.receive(receivePkt);
+                    Node.socket.receive(receivePkt);
                     
                 }
                 

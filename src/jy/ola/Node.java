@@ -142,11 +142,6 @@ public class Node {
             int random = (int)(Math.random() * 99);
             String message = random + "> " + input.nextLine();
             
-            if(message.equalsIgnoreCase("quit")) {
-                socket.close();
-                System.exit(0);
-            }
-            
             send = message.getBytes();
 
             DatagramPacket sendPkt = new DatagramPacket(send, send.length, remAddr, remPort);

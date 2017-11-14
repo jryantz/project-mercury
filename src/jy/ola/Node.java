@@ -20,6 +20,8 @@ public class Node {
     
     private static boolean wait = true;
     
+    public final int drop;
+    
     private final boolean server;
     private final boolean client;
     
@@ -31,7 +33,9 @@ public class Node {
     public static InetAddress remAddr;
     public static int remPort = 0;
 
-    public Node(int mode) {
+    public Node(int mode, int drop) {
+        
+        this.drop = drop;
         
         switch(mode) {
             case 0:
@@ -122,20 +126,21 @@ public class Node {
     } // end client
     
     /**
-     * Initializes the sender.
+     * Sends data to the other connected node.
      * 
-     * Allows for sending of messages to the other user.
+     * Allows for sending of messages.
      */
     private void sender() {
         
         Scanner input = new Scanner(new InputStreamReader(System.in));
-
+        
         byte[] send;
         boolean cont = true;
         
         do {
             
-            String message = input.nextLine();
+            int random = (int)(Math.random() * 99);
+            String message = random + "> " + input.nextLine();
             
             if(message.equalsIgnoreCase("quit")) {
                 socket.close();
@@ -143,8 +148,7 @@ public class Node {
             }
             
             send = message.getBytes();
-            
-            
+
             DatagramPacket sendPkt = new DatagramPacket(send, send.length, remAddr, remPort);
             
             try {

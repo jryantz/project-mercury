@@ -81,6 +81,6 @@ public class Client {
         
         thread.quit();
         
-    }//end Client
+    } // end Client
     
-}//end class Client
+} // end class Client

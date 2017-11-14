@@ -30,6 +30,6 @@ public class Main {
             }
         }
         
-    }//end main
+    } // end main
     
-}//end class Main
+} // end class Main

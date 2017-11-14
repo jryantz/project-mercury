@@ -66,6 +66,7 @@ public class Server {
         
         boolean wait = true;
         do {
+            
             String message = name + "> " + input.nextLine();
             
             if(message.equalsIgnoreCase(name + "> quit")) {
@@ -79,9 +80,10 @@ public class Server {
             
             try {
                 socket.send(sendPkt);
-            } catch (IOException ex) {
-                Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IOException e) {
+                Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, e);
             }
+            
         } while(wait == true);
         
         thread.quit();

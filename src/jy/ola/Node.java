@@ -144,10 +144,8 @@ public class Node {
             
             send = message.getBytes();
 
-            DatagramPacket sendPkt = new DatagramPacket(send, send.length, remAddr, remPort);
-            
             try {
-                socket.send(sendPkt);
+                socket.send(new DatagramPacket(send, send.length, remAddr, remPort));
             } catch(IOException e) {
                 Logger.getLogger(Node.class.getName()).log(Level.SEVERE, null, e);
             }

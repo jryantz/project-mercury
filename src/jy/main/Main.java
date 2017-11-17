@@ -15,6 +15,26 @@ public class Main {
 
     public static void main(String[] args) {
         
+        boolean nodeCont = true;
+        int node = 0;
+        
+        while(nodeCont) {
+            Scanner input = new Scanner(new InputStreamReader(System.in));
+            
+            System.out.print("Server[s] / Client[c]: ");
+            String choice = input.nextLine();
+            
+            if(choice.equalsIgnoreCase("s")) {
+                node = 0;
+                nodeCont = false;
+            }
+            
+            if(choice.equalsIgnoreCase("c")) {
+                node = 1;
+                nodeCont = false;
+            }
+        }
+        
         boolean dropCont = true;
         int drop = 0;
         
@@ -29,25 +49,7 @@ public class Main {
             }
         }
         
-        boolean nodeCont = true;
-        String choice;
-        
-        while(nodeCont) {
-            Scanner input = new Scanner(new InputStreamReader(System.in));
-            
-            System.out.print("Server[s] / Client[c]: ");
-            choice = input.nextLine();
-            
-            if(choice.equalsIgnoreCase("s")) {
-                Node n = new Node(0, drop);
-                nodeCont = false;
-            }
-            
-            if(choice.equalsIgnoreCase("c")) {
-                Node n = new Node(1, drop);
-                nodeCont = false;
-            }
-        }
+        Node n = new Node(node, drop);
         
     } // end main
     

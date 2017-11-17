@@ -15,6 +15,8 @@ public class Main {
 
     public static void main(String[] args) {
         
+        //test();
+                
         boolean nodeCont = true;
         int node = 0;
         
@@ -52,5 +54,17 @@ public class Main {
         Node n = new Node(node, drop);
         
     } // end main
+    
+    private static void test() {
+        
+        String s = Convert.toBinary(File.readAll("test-content-provided.txt"));
+        System.out.println("Binary: " + s);
+        System.out.println("Length: " + s.length());
+        System.out.println("% 8: " + s.length() % 8);
+        System.out.println("Packets: " + Math.ceil(s.length() / 1024.0));
+        System.out.println("Full: " + s.length() / 1024);
+        System.out.println("1 Partial - bits: " + ((s.length() / 1024.0) - (s.length() / 1024)) * 1024);
+        
+    } // end test
     
 } // end class Main

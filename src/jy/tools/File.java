@@ -8,6 +8,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -97,5 +98,26 @@ public class File {
         }
         
     } // end writeAll
+    
+    public static String[] list() {
+        
+        java.io.File folder = new java.io.File(".");
+        java.io.File[] list = folder.listFiles();
+        
+        String[] out = new String[list.length];
+        
+        for(int i = 0; i < list.length; i++) {
+            if(list[i].isFile()) {
+                out[i] = list[i].getName();
+            } else if(list[i].isDirectory()) {
+                out[i] = "/" + list[i].getName();
+            }
+        }
+        
+        Arrays.sort(out);
+        
+        return out;
+        
+    } // end list
     
 } // end class File

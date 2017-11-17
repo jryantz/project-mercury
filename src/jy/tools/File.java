@@ -4,8 +4,13 @@ import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -64,5 +69,33 @@ public class File {
         } catch(IOException e) {}
         
     } // end write
+    
+    public static byte[] readAll(String location) {
+        
+        Path path = Paths.get(location);
+        
+        byte[] data = new byte[1024];
+        
+        try {
+            data = Files.readAllBytes(path);
+        } catch (IOException e) {
+            Logger.getLogger(File.class.getName()).log(Level.SEVERE, null, e);
+        }
+        
+        return data;
+        
+    } // end readAll
+    
+    public static void writeAll(String location, byte[] content) {
+        
+        Path path = Paths.get(location);
+        
+        try {
+            Files.write(path, content);
+        } catch (IOException e) {
+            Logger.getLogger(File.class.getName()).log(Level.SEVERE, null, e);
+        }
+        
+    } // end writeAll
     
 } // end class File

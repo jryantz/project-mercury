@@ -1,7 +1,10 @@
-package jy.ola;
+package jy.main;
 
 import java.io.InputStreamReader;
 import java.util.Scanner;
+
+import jy.ola.*;
+import jy.tools.*;
 
 /**
  *

@@ -3,7 +3,8 @@ package jy.main;
 import java.io.InputStreamReader;
 import java.util.Scanner;
 
-import jy.ola.*;
+import jy.ola.Node;
+import jy.ola.Packet;
 
 /**
  *
@@ -14,7 +15,7 @@ public class Main {
 
     public static void main(String[] args) {
         
-        //test();
+        test();
                 
         boolean nodeCont = true;
         int node = 0;
@@ -56,7 +57,11 @@ public class Main {
     
     private static void test() {
         
+        Packet.packAll(0, "test-content-provided.txt");
         
+        for(int i = 0; i < Packet.packets.size(); i++) {
+            System.out.println("[" + i + " - " + Packet.packets.get(i).length() + "]: " + Packet.packets.get(i));
+        }
         
     } // end test
     

@@ -194,4 +194,17 @@ public class Packet {
         
     } // end rpad
     
+    public static String blank() {
+        
+        packets.clear();
+        
+        pack(0, "");
+        String packet = packets.get(0);
+
+        packets.clear();
+        
+        return packet;
+        
+    } // end blank
+    
 } // end class Packet

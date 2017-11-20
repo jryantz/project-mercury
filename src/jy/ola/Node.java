@@ -123,6 +123,7 @@ public class Node {
         
         receive();
         lock = false;
+        send(Packet.blank());
         
     } // end client
     

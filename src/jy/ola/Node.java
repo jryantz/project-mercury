@@ -18,9 +18,10 @@ import java.util.logging.Logger;
 
 public class Node {
     
-    private static boolean wait = true;
+    private static boolean wait = true; // flips when the client connects to the server
+    private static boolean lock = true; // locks the send function until the Node has been initialized
     
-    public final int drop;
+    public final int drop; // the percent of packets to drop
     
     private final boolean server;
     private final boolean client;
@@ -86,9 +87,9 @@ public class Node {
         System.out.println("Port: " + locPort);
         System.out.println("*** COMMUNICATION STARTED ***");
         
-        receiver();
+        receive();
         waiting();
-        sender();
+        lock = false;
         
     } // end server
     
@@ -120,8 +121,8 @@ public class Node {
         System.out.println("Port: " + socket.getLocalPort());
         System.out.println("*** COMMUNICATION STARTED ***");
         
-        receiver();
-        sender();
+        receive();
+        lock = false;
         
     } // end client
     
@@ -129,30 +130,30 @@ public class Node {
      * Sends data to the other connected node.
      * 
      * Allows for sending of messages.
+     * @param bits packet to be sent.
      */
-    private void sender() {
+    public void send(String bits) {
         
-        Scanner input = new Scanner(new InputStreamReader(System.in));
-        
-        byte[] send;
-        boolean cont = true;
-        
-        do {
-            
-            String message = input.nextLine();
-            
-            send = message.getBytes();
-            
-            int random = (int)(Math.random() * 99);
-            if(random >= drop) {
-                try {
-                    socket.send(new DatagramPacket(send, send.length, remAddr, remPort));
-                } catch(IOException e) {
-                    Logger.getLogger(Node.class.getName()).log(Level.SEVERE, null, e);
+        if(!lock && Packet.verify(bits)) {
+
+            byte[] send;
+            boolean cont = true;
+
+            do {
+
+                send = bits.getBytes();
+
+                int random = (int)(Math.random() * 99);
+                if(random >= drop) {
+                    try {
+                        socket.send(new DatagramPacket(send, send.length, remAddr, remPort));
+                    } catch(IOException e) {
+                        Logger.getLogger(Node.class.getName()).log(Level.SEVERE, null, e);
+                    }
                 }
-            }
-            
-        } while(cont);
+
+            } while(cont);
+        }
         
     } // end sender
     
@@ -161,7 +162,7 @@ public class Node {
      * 
      * Starts the receiver thread and allows the thread to continue executing indefinitely.
      */
-    private void receiver() {
+    private void receive() {
         
         Receiver thread = new Receiver();
         thread.server = server;

@@ -17,8 +17,8 @@ public class Receiver implements Runnable {
     /**
      * Starts the receiver thread, allowing the Node to send and receive simultaneously.
      * 
-     * Makes sure the receiver should be running, then checks for whether this is for the client or the server.
-     * Sets up the receiving socket then waits for a message to be received.
+     * <p>Makes sure the receiver should be running, then checks for whether this is for the client or the server.</p>
+     * <p>Sets up the receiving socket then waits for a message to be received.</p>
      */
     @Override
     public void run() {

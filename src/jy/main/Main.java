@@ -4,7 +4,6 @@ import java.io.InputStreamReader;
 import java.util.Scanner;
 
 import jy.ola.*;
-import jy.tools.*;
 
 /**
  *
@@ -57,13 +56,7 @@ public class Main {
     
     private static void test() {
         
-        String s = Convert.toBinary(File.readAll("test-content-provided.txt"));
-        System.out.println("Binary: " + s);
-        System.out.println("Length: " + s.length());
-        System.out.println("% 8: " + s.length() % 8);
-        System.out.println("Packets: " + Math.ceil(s.length() / 1024.0));
-        System.out.println("Full: " + s.length() / 1024);
-        System.out.println("1 Partial - bits: " + ((s.length() / 1024.0) - (s.length() / 1024)) * 1024);
+        
         
     } // end test
     

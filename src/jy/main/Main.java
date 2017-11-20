@@ -12,6 +12,8 @@ import jy.ola.Packet;
  */
 
 public class Main {
+    
+    public static Node n;
 
     public static void main(String[] args) {
         
@@ -51,7 +53,7 @@ public class Main {
             }
         }
         
-        Node n = new Node(node, drop);
+        n = new Node(node, drop);
         
     } // end main
     

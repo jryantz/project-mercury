@@ -20,6 +20,12 @@ import java.util.logging.Logger;
 
 public class File {
     
+    /**
+     * Reads a file, into memory, line by line, for later manipulation.
+     * 
+     * @param location the location of the file that should be read in.
+     * @return Returns an arraylist containing all of the lines of the file.
+     */
     public static ArrayList<String> read(String location) {
         
         ArrayList<String> content = new ArrayList();
@@ -44,6 +50,12 @@ public class File {
         
     } // end read
     
+    /**
+     * Creates a file with a given name and fills the file with the given content.
+     * 
+     * @param name the desired name of the file.
+     * @param content the content to be put into the file.
+     */
     public static void write(String name, ArrayList<String> content) {
         
         String output = "";
@@ -71,6 +83,12 @@ public class File {
         
     } // end write
     
+    /**
+     * Reads an entire file to its byte representation.
+     * 
+     * @param location the location of the file to be read.
+     * @return Returns the byte array of the file.
+     */
     public static byte[] readAll(String location) {
         
         Path path = Paths.get(location);
@@ -87,6 +105,12 @@ public class File {
         
     } // end readAll
     
+    /**
+     * Creates and writes an entire file from a byte array.
+     * 
+     * @param location The location to where the file should be written to.
+     * @param content The byte array of content to be written.
+     */
     public static void writeAll(String location, byte[] content) {
         
         Path path = Paths.get(location);
@@ -99,6 +123,11 @@ public class File {
         
     } // end writeAll
     
+    /**
+     * Lists all files inside of the directory that the JAR file is in.
+     * 
+     * @return Returns an array of all of the files.
+     */
     public static String[] list() {
         
         java.io.File folder = new java.io.File(".");

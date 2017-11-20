@@ -14,6 +14,12 @@ public class Receiver implements Runnable {
     public boolean server = false;
     public boolean client = false;
     
+    /**
+     * Starts the receiver thread, allowing the Node to send and receive simultaneously.
+     * 
+     * Makes sure the receiver should be running, then checks for whether this is for the client or the server.
+     * Sets up the receiving socket then waits for a message to be received.
+     */
     @Override
     public void run() {
         
@@ -58,6 +64,9 @@ public class Receiver implements Runnable {
         
     } // end run
     
+    /**
+     * Ends execution of the receiver thread.
+     */
     public void quit() {
         
         running = false;

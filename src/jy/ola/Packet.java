@@ -28,6 +28,12 @@ public class Packet {
      * Flag 3          Window slots available (0000)
      */
     
+    /**
+     * Packs the given payload into a packet with the proper flags and markers.
+     * 
+     * @param protocol the requested protocol, 0 for GBN OR 1 for SAW.
+     * @param payload the data that will be transmitted in the packet.
+     */
     private static void pack(int protocol, String payload) {
         
         String out = "";
@@ -50,6 +56,12 @@ public class Packet {
         
     } // end pack
     
+    /**
+     * Packs an entire file into a string of packets.
+     * 
+     * @param protocol the requested protocol, 0 for GBN OR 1 for SAW.
+     * @param file the file that should be packed into the set of packets.
+     */
     public static void packAll(int protocol, String file) {
         
         byte[] content = File.readAll(file);
@@ -69,6 +81,12 @@ public class Packet {
         
     } // end unpack
     
+    /**
+     * Returns the packets' sequence number in binary.
+     * 
+     * @param num the sequence number.
+     * @return Returns the sequence number, in binary, for packaging.
+     */
     private static String sequence(int num) {
         
         String binary = Integer.toBinaryString(num);
@@ -79,6 +97,12 @@ public class Packet {
         
     } // end sequence
     
+    /**
+     * Returns the packets' length in binary.
+     * 
+     * @param num the packets length, most important for when the packet is less than max length.
+     * @return Returns the packets length, in binary, for packaging.
+     */
     private static String length(int num) {
         
         String binary = Integer.toBinaryString(num);
@@ -89,6 +113,12 @@ public class Packet {
         
     } // end length
     
+    /**
+     * Returns the desired flags for the packet.
+     * 
+     * @param protocol the desired protocol being used for this packet.
+     * @return Returns the packet string, in binary, for packaging.
+     */
     private static String flags(int protocol) {
         
         String binary = "";
@@ -111,12 +141,28 @@ public class Packet {
         
     } // end flags
     
+    /**
+     * Verifies that the packet is the correct length and is truly in binary.
+     * 
+     * <p>The payload should be 1024 bits and the header should be 50 bits.</p>
+     * <p>If the length is not 1074, this method returns an error.</p>
+     * 
+     * @param bits the supposed bits, to be verified.
+     * @return Returns whether or not the packet is valid.
+     */
     public static boolean verify(String bits) {
         
         return bits.length() == (1024 + 50) && bits.matches("^[01]+$");
         
     } // end verify
     
+    /**
+     * Pads the content, to the left, with zero's.
+     * 
+     * @param content the content to be padded.
+     * @param length the desired length after padding.
+     * @return Returns the content at the desired length.
+     */
     private static String lpad(String content, int length) {
         
         String out = content;
@@ -129,6 +175,13 @@ public class Packet {
         
     } // end lpad
     
+    /**
+     * Pads the content, to the right, with zero's.
+     * 
+     * @param content the content to be padded.
+     * @param length the desired length after padding.
+     * @return Returns the content at the desired length.
+     */
     private static String rpad(String content, int length) {
         
         String out = content;

@@ -37,7 +37,7 @@ public class Receiver implements Runnable {
                         Node.waitflip();
                         
                         try {
-                            Thread.sleep(200);
+                            Thread.sleep(250);
                         } catch(InterruptedException e) {}
                         
                         System.out.println("\nClient connected!");

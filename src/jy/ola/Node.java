@@ -129,7 +129,8 @@ public class Node {
     /**
      * Sends data to the other connected node.
      * 
-     * Allows for sending of messages.
+     * <p>Allows for sending of messages.</p>
+     * 
      * @param bits packet to be sent.
      */
     public void send(String bits) {
@@ -160,7 +161,7 @@ public class Node {
     /**
      * Initializes the receiver.
      * 
-     * Starts the receiver thread and allows the thread to continue executing indefinitely.
+     * <p>Starts the receiver thread and allows the thread to continue executing indefinitely.</p>
      */
     private void receive() {
         
@@ -176,8 +177,8 @@ public class Node {
     /**
      * Alerts server user that there is no client connection.
      * 
-     * Shows a message alerting the user that there has not been a client connection yet;
-     * Displays a rotating animation at the end of the string of text.
+     * <p>Shows a message alerting the user that there has not been a client connection yet;</p>
+     * <p>Displays a rotating animation at the end of the string of text.</p>
      */
     private void waiting() {
         

@@ -131,18 +131,18 @@ public class Node {
      * 
      * <p>Allows for sending of messages.</p>
      * 
-     * @param bits packet to be sent.
+     * @param packet packet to be sent.
      */
-    public void send(String bits) {
+    public void send(String packet) {
         
-        if(!lock && Packet.verify(bits)) {
+        if(!lock && Packet.verify(packet)) {
 
             byte[] send;
             boolean cont = true;
 
             do {
 
-                send = bits.getBytes();
+                send = packet.getBytes();
 
                 int random = (int)(Math.random() * 99);
                 if(random >= drop) {

@@ -205,11 +205,7 @@ public class Node {
      */
     public static void waitflip() {
         
-        if(wait) {
-            wait = false;
-        } else {
-            wait = true;
-        }
+        wait = !wait;
         
     } // end waitflip
     

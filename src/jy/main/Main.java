@@ -55,6 +55,19 @@ public class Main {
         
         n = new Node(node, drop);
         
+        try {
+            Thread.sleep(250);
+        } catch(InterruptedException e) {}
+        
+        boolean mainCont = true;
+        
+        while(mainCont) {
+            Scanner input = new Scanner(new InputStreamReader(System.in));
+            
+            System.out.print("> ");
+            Command.run(input.nextLine());
+        }
+        
     } // end main
     
     private static void test() {

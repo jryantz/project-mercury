@@ -56,7 +56,7 @@ public class Main {
         node = new Node(type, drop);
         
         try {
-            Thread.sleep(250);
+            Thread.sleep(300);
         } catch(InterruptedException e) {}
         
         boolean mainCont = true;

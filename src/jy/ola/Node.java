@@ -136,7 +136,7 @@ public class Node {
      */
     public void send(String packet) {
         
-        if(!lock && Packet.verify(packet)) {
+        if(!lock) {
 
             byte[] send;
 

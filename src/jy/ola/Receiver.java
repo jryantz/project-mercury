@@ -2,6 +2,7 @@ package jy.ola;
 
 import java.io.IOException;
 import java.net.DatagramPacket;
+import jy.tools.Convert;
 
 /**
  *
@@ -55,6 +56,7 @@ public class Receiver implements Runnable {
                 
                 String messageIn = new String(receivePkt.getData());
                 System.out.println(messageIn);
+                Packet.unpack(messageIn);
             } catch(IOException e) {}
             
             try {

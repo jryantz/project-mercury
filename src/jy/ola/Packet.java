@@ -76,9 +76,27 @@ public class Packet {
         
     } // end packAll
     
-    public static void unpack() {
+    public static void unpack(String packet) {
         
+        String sequence = packet.substring(0, 32);
+        String length = packet.substring(32, 42);
+        String flags = packet.substring(42, 50);
+        String payload = packet.substring(50);
         
+        if(decode(length) > 0) {
+        
+            String content = payload.substring(0, decode(length));
+
+            System.out.println("SEQUENCE: " + sequence);
+            System.out.println("SEQUENCE: " + decode(sequence));
+            System.out.println("LENGTH: " + length);
+            System.out.println("LENGTH: " + decode(length));
+            System.out.println("FLAGS: " + flags);
+            System.out.println("PAYLOAD: " + payload);
+            System.out.println("CONTENT: " + content);
+            System.out.println("CONTENT: " + Convert.toText(content));
+        
+        }
         
     } // end unpack
     

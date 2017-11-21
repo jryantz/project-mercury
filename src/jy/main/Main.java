@@ -13,29 +13,29 @@ import jy.ola.Packet;
 
 public class Main {
     
-    public static Node n;
+    public static Node node;
 
     public static void main(String[] args) {
         
-        test();
+        //test();
                 
-        boolean nodeCont = true;
-        int node = 0;
+        boolean typeCont = true;
+        int type = 0;
         
-        while(nodeCont) {
+        while(typeCont) {
             Scanner input = new Scanner(new InputStreamReader(System.in));
             
             System.out.print("Server[s] / Client[c]: ");
             String choice = input.nextLine();
             
             if(choice.equalsIgnoreCase("s")) {
-                node = 0;
-                nodeCont = false;
+                type = 0;
+                typeCont = false;
             }
             
             if(choice.equalsIgnoreCase("c")) {
-                node = 1;
-                nodeCont = false;
+                type = 1;
+                typeCont = false;
             }
         }
         
@@ -53,7 +53,7 @@ public class Main {
             }
         }
         
-        n = new Node(node, drop);
+        node = new Node(type, drop);
         
         try {
             Thread.sleep(250);

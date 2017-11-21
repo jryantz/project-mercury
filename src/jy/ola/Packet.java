@@ -32,15 +32,16 @@ public class Packet {
      * Packs the given payload into a packet with the proper flags and markers.
      * 
      * @param protocol the requested protocol, 0 for GBN OR 1 for SAW.
+     * @param type the packet type, 0 for DATA OR 1 for ACK.
      * @param payload the data that will be transmitted in the packet.
      */
-    private static void pack(int protocol, String payload) {
+    private static void pack(int protocol, int type, String payload) {
         
         String out = "";
         
         out += sequence(packets.size()); // add the sequence number
         out += length(payload.length()); // add the length of the payload
-        out += flags(protocol);
+        out += flags(protocol, type);
         
         if(payload.length() < 1024) {
             
@@ -70,7 +71,7 @@ public class Packet {
         binary = rpad(binary, binary.length() + (1024 - (binary.length() % 1024)));
         
         for(int i = 0; i < (binary.length() / 1024); i++) {
-            pack(protocol, binary.substring((i * 1024), (i * 1024) + 1023));
+            pack(protocol, 0, binary.substring((i * 1024), (i * 1024) + 1023));
         }
         
     } // end packAll
@@ -119,7 +120,7 @@ public class Packet {
      * @param protocol the desired protocol being used for this packet.
      * @return Returns the packet string, in binary, for packaging.
      */
-    private static String flags(int protocol) {
+    private static String flags(int protocol, int type) {
         
         String binary = "";
         
@@ -134,7 +135,17 @@ public class Packet {
                 break;
         }
         
-        binary += "00"; // mark the packet as a data packet
+        switch(type) {
+            case 0:
+                binary += "00";
+                break;
+            case 1:
+                binary += "11";
+                break;
+            default:
+                break;
+        }
+        
         binary += "0000"; // mark the packet as 0 for window slots - not necessary for data packet
         
         return binary;

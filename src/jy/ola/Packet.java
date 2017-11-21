@@ -81,9 +81,14 @@ public class Packet {
         String sequence = packet.substring(0, 32);
         String length = packet.substring(32, 42);
         String flags = packet.substring(42, 50);
+        
+        String protocol = flags.substring(0, 2);
+        String type = flags.substring(2, 4);
+        String window = flags.substring(4);
+        
         String payload = packet.substring(50);
         
-        if(decode(length) > 0) {
+        if(type.equals("00")) {
         
             String content = payload.substring(0, decode(length));
 
@@ -235,7 +240,16 @@ public class Packet {
         
     } // end rpad
     
-    public static String single(String payload) {
+    public static String ack() {
+        
+        pack(0, 1, "");
+        String packet = packets.get(packets.size() - 1);
+        
+        return packet;
+        
+    } // end ack
+    
+    public static String data(String payload) {
         
         pack(0, 0, payload);
         String packet = packets.get(packets.size() - 1);
@@ -243,14 +257,5 @@ public class Packet {
         return packet;
         
     } // end single
-    
-    public static String blank() {
-        
-        pack(0, 1, "");
-        String packet = packets.get(packets.size() - 1);
-        
-        return packet;
-        
-    } // end blank
     
 } // end class Packet

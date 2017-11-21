@@ -13,7 +13,14 @@ public class Command {
     
     public static void run(String command) {
         
-        String[] args = command.split(" ");
+        String[] args = new String[2];
+        
+        if(command.contains(" ")) {
+            args[0] = command.substring(0, command.indexOf(" "));
+            args[1] = command.substring(command.indexOf(" ") + 1);
+        } else {
+            args[0] = command;
+        }
         
         switch(args[0]) {
             case "list":

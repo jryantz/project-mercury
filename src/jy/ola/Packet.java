@@ -133,6 +133,18 @@ public class Packet {
     } // end length
     
     /**
+     * Returns a binary integer value in base 10.
+     * 
+     * @param binary a binary value to be converted to base 10.
+     * @return Returns the value, in base 10, for decoding.
+     */
+    private static int decode(String binary) {
+        
+        return Integer.parseInt(binary, 2);
+        
+    } // end lengthDecode
+    
+    /**
      * Returns the desired flags for the packet.
      * 
      * @param protocol the desired protocol being used for this packet.

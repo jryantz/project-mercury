@@ -191,7 +191,7 @@ public class Packet {
      * @param bits the supposed bits, to be verified.
      * @return Returns whether or not the packet is valid.
      */
-    public static boolean verify(String bits) {
+    private static boolean verify(String bits) {
         
         return bits.length() == (1024 + 50) && bits.matches("^[01]+$");
         

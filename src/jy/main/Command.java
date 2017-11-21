@@ -1,6 +1,5 @@
 package jy.main;
 
-import jy.ola.Node;
 import jy.ola.Packet;
 import jy.tools.Convert;
 
@@ -40,7 +39,13 @@ public class Command {
     
     private static void send(String packet) {
         
-        Main.n.send(Packet.single(Convert.toBinary(packet.getBytes())));
+        String binary = Convert.toBinary(packet.getBytes());
+        
+        if(binary.length() > 1024) {
+            System.out.println("Message too large.");
+        } else {
+            Main.node.send(Packet.single(binary));
+        }
         
     } // end send
     

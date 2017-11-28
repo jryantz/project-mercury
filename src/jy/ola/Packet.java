@@ -246,9 +246,15 @@ public class Packet {
         
     } // end rpad
     
-    public static String ack() {
+    /**
+     * Builds an acknowledgment packet that can be sent using the node.
+     * 
+     * @param sequence the sequence number to be acknowledged.
+     * @return Returns the full packet, ready to be sent.
+     */
+    public static String ack(int sequence) {
         
-        pack(0, 1, "");
+        pack(sequence, 0, 1, "");
         String packet = packets.get(packets.size() - 1);
         
         return packet;

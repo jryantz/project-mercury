@@ -78,7 +78,17 @@ public class Command {
             String[] packet = Packet.getContent(packets.get(i)[0]);
             
             String type = (packet[3].equals("00")) ? "DAT" : "ACK";
-            System.out.println(type + " - " + packet[0] + "\t\tLength: " + packet[1]);
+            String rcvd = "";
+            
+            if(packet[3].equals("00")) {
+                if(packets.get(i)[1].equals("1")) {
+                    rcvd = "\u2713";
+                } else {
+                    rcvd = "x";
+                }
+            }
+            
+            System.out.println(type + " - " + packet[0] + " " + rcvd + "\t\tLength: " + packet[1]);
         }
         
     }

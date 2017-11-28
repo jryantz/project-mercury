@@ -123,7 +123,10 @@ public class Node {
         
         receive();
         lock = false;
-        send(Packet.ack());
+        
+        // Send the first packet to the server to initialize the connection.
+        send(Packet.ack(0), 1);
+        Packet.packets.clear();
         
     } // end client
     
@@ -134,15 +137,25 @@ public class Node {
      * 
      * @param packet packet to be sent.
      */
-    public void send(String packet) {
+    public void send(String packet, int type) {
         
         if(!lock) {
 
             byte[] send;
-
             send = packet.getBytes();
-
-            int random = (int)(Math.random() * 99);
+            
+            int random = 0;
+            
+            // If data packet.
+            if(type == 0) {
+                random = (int)(Math.random() * 99);
+            }
+            
+            // If acknowledgment packet.
+            if(type == 1) {
+                random = 100;
+            }
+            
             if(random >= drop) {
                 try {
                     socket.send(new DatagramPacket(send, send.length, remAddr, remPort));
@@ -150,6 +163,7 @@ public class Node {
                     Logger.getLogger(Node.class.getName()).log(Level.SEVERE, null, e);
                 }
             }
+            
         }
         
     } // end sender

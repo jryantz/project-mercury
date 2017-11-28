@@ -12,7 +12,8 @@ import jy.tools.File;
 
 public class Packet {
     
-    public static ArrayList<String> packets = new ArrayList();
+    public static int position = 0;
+    public static ArrayList<String[]> packets = new ArrayList();
     
     /*
      * Header Size     50 bits
@@ -56,9 +57,13 @@ public class Packet {
         }
         
         out += payload;
+        
+        String[] arr = new String[2];
+        arr[0] = out;
+        arr[1] = "0";
 
         if(verify(out)) {
-            packets.add(out);
+            packets.add(arr);
         }
         
     } // end pack
@@ -290,7 +295,7 @@ public class Packet {
     public static String ack(int sequence) {
         
         pack(sequence, 0, 1, "");
-        String packet = packets.get(packets.size() - 1);
+        String packet = packets.get(packets.size() - 1)[0];
         
         return packet;
         
@@ -305,7 +310,7 @@ public class Packet {
     public static String data(String payload) {
         
         pack(0, 0, payload);
-        String packet = packets.get(packets.size() - 1);
+        String packet = packets.get(packets.size() - 1)[0];
         
         return packet;
         

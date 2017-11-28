@@ -72,10 +72,10 @@ public class Command {
     
     private static void packetList() {
         
-        ArrayList<String> packets = Packet.packets;
+        ArrayList<String[]> packets = Packet.packets;
         
         for(int i = 0; i < packets.size(); i++) {
-            String[] packet = Packet.getContent(packets.get(i));
+            String[] packet = Packet.getContent(packets.get(i)[0]);
             
             String type = (packet[3].equals("00")) ? "DAT" : "ACK";
             System.out.println(type + " - " + packet[0] + "\t\tLength: " + packet[1]);

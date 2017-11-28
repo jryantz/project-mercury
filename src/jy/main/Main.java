@@ -15,6 +15,11 @@ public class Main {
     
     public static Node node;
 
+    /**
+     * The main method for the beginning of execution.
+     * 
+     * @param args any arguments that need to be supplied to start the program.
+     */
     public static void main(String[] args) {
         
         //test();
@@ -72,6 +77,9 @@ public class Main {
         
     } // end main
     
+    /**
+     * A test method for trying different use-cases.
+     */
     private static void test() {
         
         Packet.packAll(0, "test-content-provided.txt");

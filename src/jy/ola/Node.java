@@ -136,6 +136,7 @@ public class Node {
      * <p>Allows for sending of messages.</p>
      * 
      * @param packet packet to be sent.
+     * @param type the packet type, 0 for data and 1 for acknowledgment.
      */
     public void send(String packet, int type) {
         

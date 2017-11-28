@@ -141,7 +141,8 @@ public class Packet {
         
         if(type.equals("00")) {
             
-            String content = payload.substring(0, decode(length));
+            // If the length is less than max, trim - otherwise use the full payload.
+            String content = (decode(length) < 1023) ? payload.substring(0, decode(length)) : payload;
             
             out[5] = content;
             out[6] = Convert.toText(content);

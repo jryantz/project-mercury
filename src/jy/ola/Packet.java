@@ -107,8 +107,9 @@ public class Packet {
         
         }
         
-        if(content[3].equals("11")) {
+        if(content[3].equals("11") && !packets.isEmpty()) {
             
+            packets.get(Integer.parseInt(content[0]))[1] = "1";
             System.out.println("Packet #" + content[0] + ", acknowledged.");
             
         }

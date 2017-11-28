@@ -261,6 +261,12 @@ public class Packet {
         
     } // end ack
     
+    /**
+     * Builds a data packet that can be sent using the node.
+     * 
+     * @param payload the content to be added to the packet, must be in binary.
+     * @return Returns the full packet, ready to be sent.
+     */
     public static String data(String payload) {
         
         pack(0, 0, payload);

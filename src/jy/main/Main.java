@@ -71,7 +71,6 @@ public class Main {
         while(mainCont) {
             Scanner input = new Scanner(new InputStreamReader(System.in));
             
-            System.out.print("> ");
             Command.run(input.nextLine());
         }
         

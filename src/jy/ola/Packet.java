@@ -1,7 +1,7 @@
 package jy.ola;
 
 import java.util.ArrayList;
-
+import jy.main.Main;
 import jy.tools.Convert;
 import jy.tools.File;
 
@@ -84,32 +84,67 @@ public class Packet {
     
     public static void unpack(String packet) {
         
+        String[] content = getContent(packet);
+        
+        if(content[3].equals("00")) {
+
+            System.out.println("SEQUENCE: " + packet.substring(0, 32));
+            System.out.println("SEQUENCE: " + content[0]);
+            System.out.println("LENGTH: " + packet.substring(32, 42));
+            System.out.println("LENGTH: " + content[1]);
+            System.out.println("FLAGS: " + packet.substring(42, 50));
+            System.out.println("PAYLOAD: " + packet.substring(50));
+            System.out.println("CONTENT: " + content[5]);
+            System.out.println("CONTENT: " + content[6]);
+            
+            //send an ack
+            Main.node.send(ack(Integer.parseInt(content[0])), 1);
+        
+        }
+        
+        if(content[3].equals("11")) {
+            
+            System.out.println("Packet #" + content[0] + ", acknowledged.");
+            
+        }
+        
+    } // end unpack
+    
+    public static String[] getContent(String packet) {
+        
+        String[] out = new String[7];
+        
         String sequence = packet.substring(0, 32);
+        out[0] = "" + decode(sequence);
+        
         String length = packet.substring(32, 42);
+        out[1] = "" + decode(length);
+        
         String flags = packet.substring(42, 50);
         
         String protocol = flags.substring(0, 2);
+        out[2] = protocol;
+        
         String type = flags.substring(2, 4);
+        out[3] = type;
+        
         String window = flags.substring(4);
+        out[4] = window;
         
         String payload = packet.substring(50);
         
         if(type.equals("00")) {
-        
+            
             String content = payload.substring(0, decode(length));
-
-            System.out.println("SEQUENCE: " + sequence);
-            System.out.println("SEQUENCE: " + decode(sequence));
-            System.out.println("LENGTH: " + length);
-            System.out.println("LENGTH: " + decode(length));
-            System.out.println("FLAGS: " + flags);
-            System.out.println("PAYLOAD: " + payload);
-            System.out.println("CONTENT: " + content);
-            System.out.println("CONTENT: " + Convert.toText(content));
-        
+            
+            out[5] = content;
+            out[6] = Convert.toText(content);
+            
         }
         
-    } // end unpack
+        return out;
+        
+    } // end getContent
     
     /**
      * Returns the packets' sequence number in binary.

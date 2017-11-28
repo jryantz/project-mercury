@@ -55,7 +55,7 @@ public class Receiver implements Runnable {
                 }
                 
                 String messageIn = new String(receivePkt.getData());
-                System.out.println(messageIn);
+                //System.out.println(messageIn);
                 Packet.unpack(messageIn);
             } catch(IOException e) {}
             

@@ -61,6 +61,8 @@ public class Main {
         
         boolean mainCont = true;
         
+        Command.run("commands");
+        
         while(mainCont) {
             Scanner input = new Scanner(new InputStreamReader(System.in));
             

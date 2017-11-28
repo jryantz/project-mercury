@@ -28,18 +28,24 @@ public class Packet {
      * Flag 3          Window slots available (0000)
      */
     
+    private static void pack(int protocol, int type, String payload) {
+        
+        pack(packets.size(), protocol, type, payload);
+        
+    } // end pack
+    
     /**
      * Packs the given payload into a packet with the proper flags and markers.
      * 
      * @param protocol the requested protocol, 0 for GBN OR 1 for SAW.
      * @param type the packet type, 0 for DATA OR 1 for ACK.
-     * @param payload the data that will be transmitted in the packet.
+     * @param payload the data that will be transmitted in the packet, must be in binary.
      */
-    private static void pack(int protocol, int type, String payload) {
+    private static void pack(int sequence, int protocol, int type, String payload) {
         
         String out = "";
         
-        out += sequence(packets.size()); // add the sequence number
+        out += sequence(sequence); // add the sequence number
         out += length(payload.length()); // add the length of the payload
         out += flags(protocol, type);
         

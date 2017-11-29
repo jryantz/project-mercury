@@ -58,6 +58,8 @@ public class File {
             Logger.getLogger(File.class.getName()).log(Level.SEVERE, null, e);
         }
         
+        System.out.println("*** File Received and Written ***");
+        
     } // end writeAll
     
     /**
@@ -95,6 +97,8 @@ public class File {
     public static byte[] convert(ArrayList<String[]> content) {
         
         String binary = "";
+        
+//        System.out.println(content.size());
         
 //        for(int i = 0; i < content.size(); i++) {
 //            System.out.println(content.get(i)[1] + "\n");

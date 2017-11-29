@@ -18,10 +18,13 @@ import java.util.logging.Logger;
 
 public class Node {
     
-    private static boolean wait = true; // flips when the client connects to the server
-    private static boolean lock = true; // locks the send function until the Node has been initialized
+    private static boolean wait = true; // Flips when the client connects to the server.
+    private static boolean lock = true; // Locks the send function until the Node has been initialized.
     
-    public final int drop; // the percent of packets to drop
+    public final int drop; // The percent of packets to drop.
+    
+    private static long lastSend = 0; // Last packet send time.
+    private static String lastPkt = ""; // Last packet sent.
     
     private final boolean server;
     private final boolean client;
@@ -141,6 +144,56 @@ public class Node {
     public void send(String packet, int type) {
         
         if(!lock) {
+            
+            // If packet protocol == 1 (SAW) and the packet type is data.
+            if(Packet.protocol == 1 && type == 0) {
+
+                // If lastSend == 0, send immediately.
+                if(lastSend != 0) {
+                    
+                    // Get the last packets index in the array list.
+                    int lastPacketIndex = Packet.getPacketIndexWithPacket(lastPkt);
+                    
+                    if(Packet.packets.get(lastPacketIndex)[1].equals("0")) {
+                        
+                        boolean resendLast = true;
+                    
+                        do {
+
+                            // While the timeout has not been reached and the packet has not been acknowledged, loop.
+                            long timeout = lastSend + 1000; // 1s = 1000ms; 0.5s = 500ms; 0.25s = 250ms;
+                            while(timeout > System.currentTimeMillis() && Packet.packets.get(lastPacketIndex)[1].equals("0")) {
+
+                                // WAIT FOR ACK OR TIMEOUT.
+                                
+                                try {
+                                    Thread.sleep(100);
+                                } catch(InterruptedException e) {}
+                            }
+                            
+                            // Check if last packet has not been acknowledged.
+                            if(Packet.packets.get(lastPacketIndex)[1].equals("0")) {
+
+                                // Last packet not acknowledged.
+                                lastSend = 0;
+                                send(lastPkt, 0);
+
+                            } else {
+
+                                // Last packet has been acknowledged, continue with send.
+                                resendLast = false;
+
+                            }
+
+                        } while(resendLast);
+                    
+                    }
+
+                }
+                
+            } // end packet.protocol == SAW and packet.type == data
+            
+            //System.out.print(Packet.getContent(packet)[0] + " ");
 
             byte[] send;
             send = packet.getBytes();
@@ -155,6 +208,12 @@ public class Node {
             // If acknowledgment packet.
             if(type == 1) {
                 random = 100;
+            }
+            
+            // SET/RESET THE TIMER FOR DATA PACKETS
+            if(type == 0) {
+                lastPkt = packet;
+                lastSend = System.currentTimeMillis();
             }
             
             if(random >= drop) {

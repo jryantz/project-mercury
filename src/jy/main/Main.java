@@ -81,7 +81,7 @@ public class Main {
      */
     private static void test() {
         
-        Packet.packAll(0, "test-content-provided.txt");
+        Packet.packAll("test-content-provided.txt");
         
         for(int i = 0; i < Packet.packets.size(); i++) {
             System.out.println("[" + i + " - " + Packet.packets.get(i)[0].length() + "]: " + Packet.packets.get(i)[0]);

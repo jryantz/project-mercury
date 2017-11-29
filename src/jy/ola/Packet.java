@@ -12,6 +12,8 @@ import jy.tools.File;
 
 public class Packet {
     
+    public static int protocol = 1; // 0 for GBN - 1 for SAW
+            
     public static int position = 0;
     public static ArrayList<String[]> packets = new ArrayList(); // OUTGOING PACKETS
     private static ArrayList<String[]> buffer = new ArrayList(); // INCOMING PACKETS
@@ -30,20 +32,20 @@ public class Packet {
      * Flag 3          Window slots available (0000)
      */
     
-    private static void pack(int protocol, int type, String payload) {
+    private static void pack(int type, String payload) {
         
-        pack(packets.size(), protocol, type, payload);
+        pack(packets.size(), type, payload);
         
     } // end pack
     
     /**
      * Packs the given payload into a packet with the proper flags and markers.
      * 
-     * @param protocol the requested protocol, 0 for GBN OR 1 for SAW.
+     * @param sequence the desired sequence number.
      * @param type the packet type, 0 for DATA OR 1 for ACK.
      * @param payload the data that will be transmitted in the packet, must be in binary.
      */
-    private static void pack(int sequence, int protocol, int type, String payload) {
+    private static void pack(int sequence, int type, String payload) {
         
         String out = "";
         
@@ -78,10 +80,9 @@ public class Packet {
     /**
      * Packs an entire file into a string of packets.
      * 
-     * @param protocol the requested protocol, 0 for GBN OR 1 for SAW.
      * @param file the file that should be packed into the set of packets.
      */
-    public static void packAll(int protocol, String file) {
+    public static void packAll(String file) {
         
         byte[] content = File.readAll(file);
         String binary = Convert.toBinary(content);
@@ -91,9 +92,9 @@ public class Packet {
         
         for(int i = 0; i < binary.length(); i += 1024) {
             if((i + 1024) > binary.length()) {
-                pack(protocol, 0, binary.substring(i));
+                pack(0, binary.substring(i));
             } else {
-                pack(protocol, 0, binary.substring(i, i + 1024));
+                pack(0, binary.substring(i, i + 1024));
             }
         }
         
@@ -319,7 +320,7 @@ public class Packet {
      */
     public static String ack(int sequence) {
         
-        pack(sequence, 0, 1, "");
+        pack(sequence, 1, "");
         String packet = packets.get(packets.size() - 1)[0];
         
         return packet;
@@ -334,7 +335,7 @@ public class Packet {
      */
     public static String data(String payload) {
         
-        pack(0, 0, payload);
+        pack(0, payload);
         String packet = packets.get(packets.size() - 1)[0];
         
         return packet;

@@ -84,7 +84,7 @@ public class Command {
             return;
         }
         
-        Packet.packAll(0, list[Integer.parseInt(file)]);
+        Packet.packAll(list[Integer.parseInt(file)]);
         
         int pkts = 0;
         

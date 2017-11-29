@@ -86,18 +86,24 @@ public class Command {
         
         Packet.packAll(list[Integer.parseInt(file)]);
         
-        int pkts = 0;
+        final int pktSize = Packet.packets.size();
+        System.out.println("# of Packets: " + Packet.packets.size());
+        System.out.println("Sending...");
+        final long stime = System.currentTimeMillis();
         
-        for(int i = Packet.position; i < Packet.packets.size(); i++) {
+        for(int i = 0; i < pktSize; i++) {
 //            System.out.print(i + " ");
 //            System.out.println("[" + i + " - " + Packet.packets.get(i)[0].length() + "]: " + Packet.packets.get(i)[0]);
             
             Main.node.send(Packet.packets.get(i)[0], 0);
-            
-            pkts++;
         }
         
-        Packet.position += pkts;
+        Main.node.send(Packet.data(" "), 0);
+        
+        final long etime = System.currentTimeMillis();
+        System.out.println("Done!");
+        System.out.println("Execution Time: " + ((etime - stime) / 1000) + "s");
+        System.exit(0);
         
     }
     

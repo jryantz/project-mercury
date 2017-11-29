@@ -13,8 +13,7 @@ import jy.tools.File;
 public class Packet {
     
     public static int protocol = 1; // 0 for GBN - 1 for SAW
-            
-    public static int position = 0;
+    
     public static ArrayList<String[]> packets = new ArrayList(); // OUTGOING PACKETS
     private static ArrayList<String[]> buffer = new ArrayList(); // INCOMING PACKETS
     
@@ -30,6 +29,14 @@ public class Packet {
      * Flag 1          GBN (00) - SAW (11)
      * Flag 2          Data (00) - ACK (11)
      * Flag 3          Window slots available (0000)
+     *
+     * -----
+     *
+     * Packets Array
+     *
+     * [0] - DATA
+     * [1] - ACK ? (0 NOT-ACKNOWLEDGED) : (1 ACKNOWLEDGED)
+     *
      */
     
     private static void pack(int type, String payload) {
@@ -105,15 +112,6 @@ public class Packet {
         String[] content = getContent(packet);
         
         if(content[3].equals("00")) {
-
-//            System.out.println("SEQUENCE: " + packet.substring(0, 32));
-//            System.out.println("SEQUENCE: " + content[0]);
-//            System.out.println("LENGTH: " + packet.substring(32, 42));
-//            System.out.println("LENGTH: " + content[1]);
-//            System.out.println("FLAGS: " + packet.substring(42, 50));
-//            System.out.println("PAYLOAD: " + packet.substring(50));
-//            System.out.println("CONTENT: " + content[5]);
-//            System.out.println("CONTENT: " + content[6]);
             
             // Send the acknowledgment.
             Main.node.send(ack(Integer.parseInt(content[0])), 1);
@@ -134,7 +132,7 @@ public class Packet {
         if(content[3].equals("11") && !packets.isEmpty()) {
             
             packets.get(Integer.parseInt(content[0]))[1] = "1";
-            System.out.println("Packet #" + content[0] + ", acknowledged.");
+            //System.out.println("Packet #" + content[0] + ", acknowledged.");
             
         }
         
@@ -176,6 +174,21 @@ public class Packet {
         return out;
         
     } // end getContent
+    
+    public static int getPacketIndexWithPacket(String packet) {
+        
+        for(int i = packets.size() - 1; i >= 0; i--) {
+            String[] pkt_struct = packets.get(i);
+            String pkt = pkt_struct[0];
+            
+            if(packet.equals(pkt)) {
+                return i;
+            }
+        }
+        
+        return -1;
+        
+    }
     
     /**
      * Returns the packets' sequence number in binary.

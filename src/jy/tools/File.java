@@ -21,69 +21,6 @@ import java.util.logging.Logger;
 public class File {
     
     /**
-     * Reads a file, into memory, line by line, for later manipulation.
-     * 
-     * @param location the location of the file that should be read in.
-     * @return Returns an arraylist containing all of the lines of the file.
-     */
-    public static ArrayList<String> read(String location) {
-        
-        ArrayList<String> content = new ArrayList();
-        
-        try {
-            
-            Scanner reader = new Scanner(new java.io.File(location));
-            
-            while(reader.hasNextLine()) {
-                String line = reader.nextLine();
-                content.add(line + "\n");
-            }
-            
-        } catch(FileNotFoundException e) {
-            System.out.println("File does not exist.");
-            content.clear();
-            
-            return new ArrayList();
-        }
-        
-        return content;
-        
-    } // end read
-    
-    /**
-     * Creates a file with a given name and fills the file with the given content.
-     * 
-     * @param name the desired name of the file.
-     * @param content the content to be put into the file.
-     */
-    public static void write(String name, ArrayList<String> content) {
-        
-        String output = "";
-        
-        for(int i = 0; i < content.size(); i++) {
-            
-            output += content.get(i);
-            
-        }
-        
-        try {
-
-            java.io.File file = new java.io.File(name);
-
-            if(!file.exists()) {
-                file.createNewFile();
-            }
-            
-            FileWriter fw = new FileWriter(file.getAbsoluteFile());
-            try (BufferedWriter bw = new BufferedWriter(fw)) {
-                bw.write(output);
-            }
-            
-        } catch(IOException e) {}
-        
-    } // end write
-    
-    /**
      * Reads an entire file to its byte representation.
      * 
      * @param location the location of the file to be read.

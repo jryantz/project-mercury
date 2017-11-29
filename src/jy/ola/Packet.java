@@ -123,7 +123,7 @@ public class Packet {
             buffer.add(out);
             
             // If the length is less than 1024 - write the file.
-            if(Integer.parseInt(content[1]) <= 1024) {
+            if(Integer.parseInt(content[1]) < 1024) {
                 File.writeAll("COSC635_P2_DataReceived.txt", File.convert(buffer));
             }
         

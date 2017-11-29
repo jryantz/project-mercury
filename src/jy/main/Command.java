@@ -32,7 +32,7 @@ public class Command {
                 fileList();
                 break;
             case "file-send":
-                
+                fileSend(args[1]);
                 break;
             case "packet-list":
                 packetList();
@@ -70,6 +70,37 @@ public class Command {
         
     }
     
+    private static void fileSend(String file) {
+        
+        String[] list = File.list();
+        
+        // If users enters something invalid, send the value too high to matter.
+        if(!file.matches("^\\d+$")) {
+            file = "10000000";
+        }
+        
+        // If the number isn't in the list, fail.
+        if(list.length <= Integer.parseInt(file)) {
+            return;
+        }
+        
+        Packet.packAll(0, list[Integer.parseInt(file)]);
+        
+        int pkts = 0;
+        
+        for(int i = Packet.position; i < Packet.packets.size(); i++) {
+//            System.out.print(i + " ");
+//            System.out.println("[" + i + " - " + Packet.packets.get(i)[0].length() + "]: " + Packet.packets.get(i)[0]);
+            
+            Main.node.send(Packet.packets.get(i)[0], 0);
+            
+            pkts++;
+        }
+        
+        Packet.position += pkts;
+        
+    }
+    
     private static void packetList() {
         
         ArrayList<String[]> packets = Packet.packets;
@@ -88,7 +119,9 @@ public class Command {
                 }
             }
             
+            //System.out.println(type + " - " + packet[0] + " " + rcvd + "\t\tLength: " + packet[1] + "\t\tContent: " + packet[6]);
             System.out.println(type + " - " + packet[0] + " " + rcvd + "\t\tLength: " + packet[1]);
+
         }
         
     }

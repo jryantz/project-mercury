@@ -13,7 +13,8 @@ import jy.tools.File;
 public class Packet {
     
     public static int position = 0;
-    public static ArrayList<String[]> packets = new ArrayList();
+    public static ArrayList<String[]> packets = new ArrayList(); // OUTGOING PACKETS
+    private static ArrayList<String[]> buffer = new ArrayList(); // INCOMING PACKETS
     
     /*
      * Header Size     50 bits
@@ -46,14 +47,20 @@ public class Packet {
         
         String out = "";
         
-        out += sequence(sequence); // add the sequence number
-        out += length(payload.length()); // add the length of the payload
-        out += flags(protocol, type);
+        out += sequence(sequence); // Add the sequence number.
         
         if(payload.length() < 1024) {
-            
+            out += length(payload.length()); // Add the length of the payload - translate actual size if length is less than max.
+        }
+        
+        if(payload.length() == 1024) {
+            out += length(payload.length() - 1); // Add the length of the payload - subtract 1 to keep packet length valid.
+        }
+        
+        out += flags(protocol, type); // Add the flags to the packet.
+        
+        if(payload.length() < 1024) {
             payload = rpad(payload, 1024);
-            
         }
         
         out += payload;
@@ -79,10 +86,15 @@ public class Packet {
         byte[] content = File.readAll(file);
         String binary = Convert.toBinary(content);
         
-        binary = rpad(binary, binary.length() + (1024 - (binary.length() % 1024)));
+//        System.out.println(binary.length());
+//        System.out.println("\n" + binary);
         
-        for(int i = 0; i < (binary.length() / 1024); i++) {
-            pack(protocol, 0, binary.substring((i * 1024), (i * 1024) + 1023));
+        for(int i = 0; i < binary.length(); i += 1024) {
+            if((i + 1024) > binary.length()) {
+                pack(protocol, 0, binary.substring(i));
+            } else {
+                pack(protocol, 0, binary.substring(i, i + 1024));
+            }
         }
         
     } // end packAll
@@ -93,17 +105,28 @@ public class Packet {
         
         if(content[3].equals("00")) {
 
-            System.out.println("SEQUENCE: " + packet.substring(0, 32));
-            System.out.println("SEQUENCE: " + content[0]);
-            System.out.println("LENGTH: " + packet.substring(32, 42));
-            System.out.println("LENGTH: " + content[1]);
-            System.out.println("FLAGS: " + packet.substring(42, 50));
-            System.out.println("PAYLOAD: " + packet.substring(50));
-            System.out.println("CONTENT: " + content[5]);
-            System.out.println("CONTENT: " + content[6]);
+//            System.out.println("SEQUENCE: " + packet.substring(0, 32));
+//            System.out.println("SEQUENCE: " + content[0]);
+//            System.out.println("LENGTH: " + packet.substring(32, 42));
+//            System.out.println("LENGTH: " + content[1]);
+//            System.out.println("FLAGS: " + packet.substring(42, 50));
+//            System.out.println("PAYLOAD: " + packet.substring(50));
+//            System.out.println("CONTENT: " + content[5]);
+//            System.out.println("CONTENT: " + content[6]);
             
-            //send an ack
+            // Send the acknowledgment.
             Main.node.send(ack(Integer.parseInt(content[0])), 1);
+            
+            // Add the data for the file to the out buffer.
+            String[] out = new String[2];
+            out[0] = content[0];
+            out[1] = content[5];
+            buffer.add(out);
+            
+            // If the length is less than 1024 - write the file.
+            if(Integer.parseInt(content[1]) <= 1024) {
+                File.writeAll("COSC635_P2_DataReceived.txt", File.convert(buffer));
+            }
         
         }
         
@@ -124,7 +147,7 @@ public class Packet {
         out[0] = "" + decode(sequence);
         
         String length = packet.substring(32, 42);
-        out[1] = "" + decode(length);
+        out[1] = "" + (decode(length) + 1);
         
         String flags = packet.substring(42, 50);
         
@@ -142,7 +165,7 @@ public class Packet {
         if(type.equals("00")) {
             
             // If the length is less than max, trim - otherwise use the full payload.
-            String content = (decode(length) < 1023) ? payload.substring(0, decode(length)) : payload;
+            String content = (decode(length) + 1 < 1024) ? payload.substring(0, decode(length)) : payload;
             
             out[5] = content;
             out[6] = Convert.toText(content);

@@ -24,7 +24,8 @@ public class Receiver implements Runnable {
     public void run() {
         
         while(running && (server || client)) {
-            byte[] receive = new byte[1024];
+            //byte[] receive = new byte[1024];
+            byte[] receive = new byte[1074];
             
             try {
                 DatagramPacket receivePkt = new DatagramPacket(receive, receive.length);
@@ -54,7 +55,7 @@ public class Receiver implements Runnable {
                 }
                 
                 String messageIn = new String(receivePkt.getData());
-                //System.out.println(messageIn);
+                
                 Packet.unpack(messageIn);
             } catch(IOException e) {}
             

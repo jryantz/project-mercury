@@ -149,4 +149,35 @@ public class File {
         
     } // end list
     
+    /**
+     * Converts array list content to byte array content for file writing.
+     * 
+     * @param content
+     * @return 
+     */
+    public static byte[] convert(ArrayList<String[]> content) {
+        
+        String binary = "";
+        
+//        for(int i = 0; i < content.size(); i++) {
+//            System.out.println(content.get(i)[1] + "\n");
+//        }
+        
+        for(int i = 0; i < content.size(); i++) {
+            for(int j = 0; j < content.size(); j++) {
+                if(content.get(j)[0].equals(i + "")) {
+                    binary += content.get(j)[1];
+                    break;
+                }
+            }
+        }
+        
+//        System.out.println(binary.length());
+//        System.out.println(binary.length() % 1024);
+//        System.out.println("\n" + binary);
+        
+        return Convert.toText(binary).getBytes();
+        
+    } // end convert
+    
 } // end class File

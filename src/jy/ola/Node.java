@@ -26,6 +26,8 @@ public class Node {
     private static long lastSend = 0; // Last packet send time.
     private static String lastPkt = ""; // Last packet sent.
     
+    public static int[] statistics = new int[2]; // PACKETS SENT total[0], fail[1]
+    
     private final boolean server;
     private final boolean client;
     
@@ -176,6 +178,7 @@ public class Node {
 
                                 // Last packet not acknowledged.
                                 lastSend = 0;
+                                statistics[1]++;
                                 send(lastPkt, 0);
 
                             } else {
@@ -215,6 +218,8 @@ public class Node {
                 lastPkt = packet;
                 lastSend = System.currentTimeMillis();
             }
+            
+            statistics[0]++;
             
             if(random >= drop) {
                 try {

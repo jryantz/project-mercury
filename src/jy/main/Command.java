@@ -1,8 +1,8 @@
 package jy.main;
 
 import java.util.ArrayList;
+import jy.ola.Node;
 import jy.ola.Packet;
-import jy.tools.Convert;
 import jy.tools.File;
 
 /**
@@ -72,6 +72,7 @@ public class Command {
     
     private static void fileSend(String file) {
         
+        // Get a list of all of the files that could be sent.
         String[] list = File.list();
         
         // If users enters something invalid, send the value too high to matter.
@@ -84,25 +85,44 @@ public class Command {
             return;
         }
         
+        // Create all the packets from the file.
         Packet.packAll(list[Integer.parseInt(file)]);
         
+        // Get the size of the packet array to know how many packets to send.
         final int pktSize = Packet.packets.size();
-        System.out.println("# of Packets: " + Packet.packets.size());
+        
+        // Reset the statistics.
+        Node.statistics = new int[2];
+        
+        // Alert and start the timer to know how long execution is.
         System.out.println("Sending...");
         final long stime = System.currentTimeMillis();
         
+        // Send all of the packets.
         for(int i = 0; i < pktSize; i++) {
-//            System.out.print(i + " ");
-//            System.out.println("[" + i + " - " + Packet.packets.get(i)[0].length() + "]: " + Packet.packets.get(i)[0]);
-            
             Main.node.send(Packet.packets.get(i)[0], 0);
         }
         
+        // Push one more packet to verify the last packet sent then decrement the statistics total packets sent.
         Main.node.send(Packet.data(" "), 0);
+        Node.statistics[0]--;
         
+        // Stop the execution timer and alert.
         final long etime = System.currentTimeMillis();
-        System.out.println("Done!");
+        System.out.println("Done!\n");
+        
+        // Output the statistics.
         System.out.println("Execution Time: " + ((etime - stime) / 1000) + "s");
+        System.out.println("\nGenerated Packets: " + Packet.packets.size());
+        System.out.println("\nPackets Sent (Total): " + Node.statistics[0]);
+        System.out.println("Packets Sent (Successful): " + (Node.statistics[0] - Node.statistics[1]));
+        System.out.println("Packets Sent (Fail): " + Node.statistics[1]);
+        
+        double calcDrop = (double)Node.statistics[1] / (double)Node.statistics[0] * 100.0;
+        
+        System.out.println("\nDrop Rate: " + (Math.round(calcDrop * 100.0) / 100.0) + "%");
+        
+        // End execution.
         System.exit(0);
         
     }

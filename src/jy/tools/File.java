@@ -58,7 +58,8 @@ public class File {
             Logger.getLogger(File.class.getName()).log(Level.SEVERE, null, e);
         }
         
-        System.out.println("*** File Received and Written ***");
+        System.out.println("\n*** File Received and Written ***");
+        System.exit(0);
         
     } // end writeAll
     

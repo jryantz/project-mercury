@@ -86,26 +86,6 @@ public class Main {
 //        for(int i = 0; i < Packet.packets.size(); i++) {
 //            System.out.println("[" + i + " - " + Packet.packets.get(i)[0].length() + "]: " + Packet.packets.get(i)[0]);
 //        }
-
-        String p1 = Packet.packets.get(0)[0];
-        String p2 = Packet.packets.get(Packet.packets.size() / 2)[0];
-        String p3 = Packet.packets.get(Packet.packets.size() - 1)[0];
-
-        long s1 = System.nanoTime();
-        Packet.getPacketIndexWithPacket(p1);
-        long e1 = System.nanoTime();
-        
-        long s2 = System.nanoTime();
-        Packet.getPacketIndexWithPacket(p2);
-        long e2 = System.nanoTime();
-        
-        long s3 = System.nanoTime();
-        Packet.getPacketIndexWithPacket(p3);
-        long e3 = System.nanoTime();
-        
-        System.out.println("0: " + (e1 - s1));
-        System.out.println((Packet.packets.size() / 2) + ": " + (e2 - s2));
-        System.out.println((Packet.packets.size() - 1) + ": " + (e3 - s3));
         
     } // end test
     

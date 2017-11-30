@@ -161,7 +161,7 @@ public class Node {
                         do {
 
                             // While the timeout has not been reached and the packet has not been acknowledged, loop.
-                            long timeout = lastSend + 1000; // 1s = 1000ms; 0.5s = 500ms; 0.25s = 250ms;
+                            long timeout = lastSend + 200; // 1s = 1000ms; 0.5s = 500ms; 0.2s = 200ms;
                             while(timeout > System.currentTimeMillis() && Packet.packets.get(lastPacketIndex)[1].equals("0")) {
 
                                 // WAIT FOR ACK OR TIMEOUT.
@@ -193,7 +193,7 @@ public class Node {
                 
             } // end packet.protocol == SAW and packet.type == data
             
-            //System.out.print(Packet.getContent(packet)[0] + " ");
+            System.out.print(Packet.getContent(packet)[0] + " ");
 
             byte[] send;
             send = packet.getBytes();

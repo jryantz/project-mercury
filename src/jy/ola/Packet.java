@@ -12,7 +12,8 @@ import jy.tools.File;
 
 public class Packet {
     
-    public static int protocol = 1; // 0 for GBN - 1 for SAW
+    public static int protocol = 0; // 0 for GBN - 1 for SAW
+    private static int acked = -1; // The last consecutive packet acknowledged.
     
     public static ArrayList<String[]> packets = new ArrayList(); // OUTGOING PACKETS
     private static ArrayList<String[]> buffer = new ArrayList(); // INCOMING PACKETS
@@ -131,8 +132,21 @@ public class Packet {
         
         if(content[3].equals("11") && !packets.isEmpty()) {
             
-            packets.get(Integer.parseInt(content[0]))[1] = "1";
-            System.out.println("Packet #" + content[0] + ", acknowledged.");
+            // If protocol = GBN.
+            if(protocol == 0 && content[0].equals((acked + 1) + "")) {
+                // Prepare for next acknowledgment.
+                acked++;
+                
+                // Send acknowledgment.
+                packets.get(Integer.parseInt(content[0]))[1] = "1";
+                System.out.println("Packet #" + content[0] + ", acknowledged.");
+            }
+            
+            // If protocol = SAW.
+            if(protocol == 1) {
+                packets.get(Integer.parseInt(content[0]))[1] = "1";
+                System.out.println("Packet #" + content[0] + ", acknowledged.");
+            }
             
         }
         

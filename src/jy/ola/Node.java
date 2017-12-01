@@ -23,6 +23,8 @@ public class Node {
     
     public final int drop; // The percent of packets to drop.
     
+    public static int[] window = {-1, -1, -1, -1, -1}; // The window for sliding window algorithm.
+    public static long[] timer = new long[5]; // The window timer for the sliding window algorithm.
     private static long lastSend = 0; // Last packet send time.
     private static String lastPkt = ""; // Last packet sent.
     
@@ -147,6 +149,173 @@ public class Node {
         
         if(!lock) {
             
+            // If packet protocol = 0 (GBN) and the packet type is data.
+            if(Packet.protocol == 0 && type == 0) {
+                
+                System.out.println("\n\nPacket ID: " + Packet.getPacketIndexWithPacket(packet));
+                
+                // If the packet being sent is in the window, just send.
+                // If not, do the normal thing.
+                if(!windowContains(Packet.getPacketIndexWithPacket(packet))) {
+                    
+                    System.out.print("Not in window... ");
+                    System.out.println("| " + window[0] + " | " + window[1] + " | " + window[2] + " | " + window[3] + " | " + window[4] + " |");
+                
+                    // If window is not full.
+                    if(!windowFull()) {
+                        
+                        //Add a packet to the window and send.
+                        int packetIndex = Packet.getPacketIndexWithPacket(packet);
+                        windowAdd(packetIndex);
+
+                    } else {
+                        
+                        boolean resendWindow = true;
+
+                        do {
+                        
+                            // While the timeout has not been reached and the packet has not been acknowledged, loop.
+                            long timeout1 = System.currentTimeMillis() + 500;
+                            while(timeout1 > System.currentTimeMillis() && Packet.packets.get(window[0])[1].equals("0")) {
+
+                                // WAIT FOR ACK OR TIMEOUT.
+
+                                try {
+                                    Thread.sleep(100);
+                                } catch(InterruptedException e) {}
+                            }
+
+                            // If the first packet is acknowledged, shift window and send the next packet.
+                            if(Packet.packets.get(window[0])[1].equals("1")) {
+                                
+                                System.out.println("Acked");
+                                
+                                long timeout2 = System.currentTimeMillis() + 500;
+                                while(timeout2 > System.currentTimeMillis()) {
+
+                                    // WAIT FOR ACK OR TIMEOUT.
+
+                                    try {
+                                        Thread.sleep(100);
+                                    } catch(InterruptedException e) {}
+                                }
+
+                                //windowShift(1);
+                                //windowAdd(Packet.getPacketIndexWithPacket(packet));
+                                //resendWindow = false;
+                                
+                                // Check how many consecutive packets have been acknowledged.
+                                int numAck = 1;
+                                for(int i = 1; i < window.length; i++) {
+                                    System.out.println(window[i]);
+                                    if(Packet.packets.get(window[i])[1].equals("1")) {
+                                        System.out.println("ack");
+                                        numAck++;
+                                    } else {
+                                        break;
+                                    }
+                                }
+
+                                // Shift by the consecutive number of acknowledged packets.
+                                windowShift(numAck);
+                                
+                                windowAdd(Packet.getPacketIndexWithPacket(packet));
+                                resendWindow = false;
+
+                            } else {
+
+                                for(int i = 0; i < window.length; i++) {
+                                    System.out.println("\n\nResend: " + window[i]);
+                                    send(Packet.packets.get(window[i])[0], 0);
+                                }
+                                
+                                timer[0] = System.currentTimeMillis();
+
+                            }
+                        
+                        } while(resendWindow);
+
+                    }
+                    
+                } // If window does not contain packet.
+                
+//                // If window is not full.
+//                if(!windowFull()) {
+//
+//                    // Add a packet to the window and send.
+//                    int packetIndex = Packet.getPacketIndexWithPacket(packet);
+//                    windowAdd(packetIndex);
+//
+//                } else { 
+//
+//                    // Window is full, start checking if acknowledgments.
+//                    
+//                    // If the first packet is not acknowledged.
+//                    if(Packet.packets.get(window[0])[1].equals("0")) {
+//                        
+//                        // And the timeout has runout.
+//                        long timeout = lastSend + 5000; // 5s = 5000ms; 1s = 1000ms; 0.5s = 500ms; 0.2s = 200ms;
+//                        while(timeout > System.currentTimeMillis() && Packet.packets.get(window[0])[1].equals("0")) {
+//
+//                            // WAIT FOR ACK OR TIMEOUT.
+//
+//                            try {
+//                                Thread.sleep(100);
+//                            } catch(InterruptedException e) {}
+//                        }
+//                        
+//                        // If it still = 0, resend.  If it now = 1, must go to next part.
+//                        
+//                        if(Packet.packets.get(window[0])[1].equals("0")) {
+//                            
+//                            for(int i = 0; i < window.length; i++) {
+//                                send(Packet.packets.get(i)[0], 0);
+//                            }
+//                                
+//                        }
+//                        
+//                    }
+//                    
+//                    if(Packet.packets.get(window[0])[1].equals("1")) {
+//                    
+//                        // If the first packet in the window has been acknowledged.
+//                        
+//                        int numAck = 0;
+//
+//                        // Checks how many consecutive packets have been acknowledged.
+//                        for(int i = 0; i < window.length; i++) {
+//                            if(Packet.packets.get(window[0])[1].equals("1")) {
+//                                numAck++;
+//                            } else {
+//                                break;
+//                            }
+//                        }
+//
+//                        // Shift by the consecutive number of acknowledged packets.
+//                        windowShift(numAck);
+//
+//                        // If the window, now, isn't full, add.
+//                        if(!windowFull()) {
+//
+//                            // Add a packet to the window and send.
+//                            int packetIndex = Packet.getPacketIndexWithPacket(packet);
+//                            windowAdd(packetIndex);
+//
+//                        } else {
+//
+//                            // Check if the first packet is not acknowledged and the timeout has run out.
+//                            if(Packet.packets.get(window[0])[1].equals("0")) {
+//
+//                            }
+//
+//                        }
+//                    
+//                    }
+//
+//                }
+                
+            } // end packet.protocol = GBN and packet.type = data
+            
             // If packet protocol == 1 (SAW) and the packet type is data.
             if(Packet.protocol == 1 && type == 0) {
 
@@ -156,6 +325,7 @@ public class Node {
                     // Get the last packets index in the array list.
                     int lastPacketIndex = Packet.getPacketIndexWithPacket(lastPkt);
                     
+                    // If the last packet has not been acknowledged.
                     if(Packet.packets.get(lastPacketIndex)[1].equals("0")) {
                         
                         boolean resendLast = true;
@@ -194,7 +364,7 @@ public class Node {
 
                 }
                 
-            } // end packet.protocol == SAW and packet.type == data
+            } // end packet.protocol = SAW and packet.type = data
             
             System.out.print(Packet.getContent(packet)[0] + " ");
 
@@ -214,7 +384,11 @@ public class Node {
             }
             
             // SET/RESET THE TIMER FOR DATA PACKETS
-            if(type == 0) {
+            if(Packet.protocol == 0 && type == 0) {
+                // Something here...
+            }
+            
+            if(Packet.protocol == 1 && type == 0) {
                 lastPkt = packet;
                 lastSend = System.currentTimeMillis();
             }
@@ -226,6 +400,10 @@ public class Node {
                     socket.send(new DatagramPacket(send, send.length, remAddr, remPort));
                 } catch(IOException e) {
                     Logger.getLogger(Node.class.getName()).log(Level.SEVERE, null, e);
+                }
+            } else {
+                if(Packet.protocol == 0 && type == 0) {
+                    statistics[1]++;
                 }
             }
             
@@ -284,5 +462,93 @@ public class Node {
         wait = !wait;
         
     } // end waitflip
+    
+    /**
+     * Test if the window has any space available.
+     * 
+     * @return Returns true if the window is full, false if there is space.
+     */
+    private boolean windowFull() {
+        
+        for(int i = window.length - 1; i >= 0; i--) {
+            if(window[i] == -1) {
+                return false;
+            }
+        }
+            
+        return true;
+        
+    } // end windowFull
+    
+    /**
+     * Adds a packet id to the window.
+     * 
+     * @param id the id of the packet in the packets array.
+     * @return Returns true if the add was successful, false if not.
+     */
+    private boolean windowAdd(int id) {
+        
+        // If the window is full, can not add.
+        if(windowFull()) {
+            return false;
+        }
+        
+        for(int i = 0; i < window.length; i++) {
+            if(window[i] == -1) {
+                window[i] = id;
+                timer[i] = System.currentTimeMillis();
+                return true;
+            }
+        }
+        
+        return false;
+        
+    } // end windowAdd
+    
+    /**
+     * Shifts packets, out to the left, by some amount.
+     * 
+     * @param amount the amount of spots to shift.
+     * @return Returns true of the shift was successful, false if not.
+     */
+    private boolean windowShift(int amount) {
+        
+        if(amount > 0 && amount <= window.length) {
+            for(int i = amount; i < window.length; i++) {
+                window[i - amount] = window[i];
+                timer[i - amount] = timer[i];
+            }
+            
+            int inv = (window.length - 1) - amount;
+            
+            for(int i = window.length - 1; i > inv; i--) {
+                window[i] = -1;
+                timer[i] = 0;
+            }
+        }
+        
+        return false;
+        
+    } // end windowShift
+    
+    /**
+     * Returns true if the packet being sent is in the window already.
+     * 
+     * @param id a packet array id.
+     * @return Returns true if the packet is in the window, false if not.
+     */
+    private boolean windowContains(int id) {
+        
+        System.out.println("Checking Packet ID: " + id);
+        for(int i = 0; i < window.length; i++) {
+            System.out.println("Checked Packet ID: " + window[i]);
+            if(window[i] == id) {
+                return true;
+            }
+        }
+        
+        return false;
+        
+    }
     
 } // end class Node

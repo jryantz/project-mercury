@@ -139,7 +139,8 @@ public class Packet {
                 
                 // Send acknowledgment.
                 packets.get(Integer.parseInt(content[0]))[1] = "1";
-                System.out.println("Packet #" + content[0] + ", acknowledged.");
+                //System.out.println("Packet #" + content[0] + ", acknowledged.");
+                System.out.print("ACK(" + content[0] + ") ");
             }
             
             // If protocol = SAW.

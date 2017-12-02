@@ -28,6 +28,9 @@ public class Command {
             case "commands":
                 commands();
                 break;
+            case "data":
+                data();
+                break;
             case "file-list":
                 fileList();
                 break;
@@ -52,6 +55,7 @@ public class Command {
     private static void commands() {
         
         System.out.println("commands: list all command options");
+        System.out.println("data: create an empty data packet");
         System.out.println("file-list: print a list of all files in the current directory");
         System.out.println("file-send [Integer fileId]: sends a file - files can be selected with file-list");
         System.out.println("packet-list: print a list of all packets sent by this node");
@@ -59,6 +63,13 @@ public class Command {
         System.out.println("quit: exit the program");
         
     } // end list
+    
+    private static void data() {
+        
+        Packet.data("");
+        System.out.println(Packet.packets.get(Packet.packets.size() - 1)[0]);
+        
+    } // end data
     
     private static void fileList() {
         

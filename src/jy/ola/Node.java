@@ -175,7 +175,7 @@ public class Node {
                         do {
                         
                             // While the timeout has not been reached and the packet has not been acknowledged, loop.
-                            long timeout1 = System.currentTimeMillis() + 300;
+                            long timeout1 = System.currentTimeMillis() + 350;
                             while(timeout1 > System.currentTimeMillis() && Packet.packets.get(window[0])[1].equals("0")) {
 
                                 // WAIT FOR ACK OR TIMEOUT.
@@ -190,7 +190,7 @@ public class Node {
                                 
                                 //System.out.println("Acked");
                                 
-                                long timeout2 = System.currentTimeMillis() + 300;
+                                long timeout2 = System.currentTimeMillis() + 350;
                                 while(timeout2 > System.currentTimeMillis()) {
 
                                     // WAIT FOR ACK OR TIMEOUT.

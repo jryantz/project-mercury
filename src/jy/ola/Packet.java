@@ -174,8 +174,10 @@ public class Packet {
         out[4] = window;
         
         String payload = packet.substring(50);
+        out[5] = "";
+        out[6] = "";
         
-        if(type.equals("00")) {
+        if(type.equals("00") && decode(length) > 0) {
             
             // If the length is less than max, trim - otherwise use the full payload.
             String content = (decode(length) + 1 < 1024) ? payload.substring(0, decode(length)) : payload;

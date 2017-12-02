@@ -364,7 +364,7 @@ public class Packet {
      */
     public static String data(String payload) {
         
-        pack(0, payload);
+        pack(0, Convert.toBinary(payload.getBytes()));
         String packet = packets.get(packets.size() - 1)[0];
         
         return packet;

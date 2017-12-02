@@ -114,9 +114,21 @@ public class Command {
             Main.node.send(Packet.packets.get(i)[0], 0);
         }
         
-        // Push one more packet to verify the last packet sent then decrement the statistics total packets sent.
-        Main.node.send(Packet.data(" "), 0);
-        Node.statistics[0]--;
+        // If protocol = GBN
+        if(Packet.protocol == 0) {
+            // While the last packet has not been acknowledged, keep sending packets.
+            while(Packet.packets.get(pktSize - 1)[1].equals("0")) {
+                Main.node.send(Packet.data(""), 0);
+                Node.statistics[0]--;
+            }
+        }
+        
+        // If protocol = SAW
+        if(Packet.protocol == 1) {
+            // Push one more packet to verify the last packet sent then decrement the statistics total packets sent.
+            Main.node.send(Packet.data(""), 0);
+            Node.statistics[0]--;
+        }
         
         // Stop the execution timer and alert.
         final long etime = System.currentTimeMillis();

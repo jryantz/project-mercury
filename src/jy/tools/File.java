@@ -55,7 +55,6 @@ public class File {
         }
         
         System.out.println("\n*** File Received and Written ***");
-        System.exit(0);
         
     } // end writeAll
     
@@ -95,12 +94,6 @@ public class File {
         
         String binary = "";
         
-//        System.out.println(content.size());
-        
-//        for(int i = 0; i < content.size(); i++) {
-//            System.out.println(content.get(i)[1] + "\n");
-//        }
-        
         for(int i = 0; i < content.size(); i++) {
             for(int j = 0; j < content.size(); j++) {
                 if(content.get(j)[0].equals(i + "")) {
@@ -109,10 +102,6 @@ public class File {
                 }
             }
         }
-        
-//        System.out.println(binary.length());
-//        System.out.println(binary.length() % 1024);
-//        System.out.println("\n" + binary);
         
         return Convert.toText(binary).getBytes();
         

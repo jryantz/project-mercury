@@ -95,9 +95,6 @@ public class Packet {
         byte[] content = File.readAll(file);
         String binary = Convert.toBinary(content);
         
-//        System.out.println(binary.length());
-//        System.out.println("\n" + binary);
-        
         for(int i = 0; i < binary.length(); i += 1024) {
             if((i + 1024) > binary.length()) {
                 pack(0, binary.substring(i));

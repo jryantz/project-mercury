@@ -151,16 +151,11 @@ public class Node {
             
             // If packet protocol = 0 (GBN) and the packet type is data.
             if(Packet.protocol == 0 && type == 0) {
-                
-                //System.out.println("\n\nPacket ID: " + Packet.getPacketIndexWithPacket(packet));
-                
+
                 // If the packet being sent is in the window, just send.
                 // If not, do the normal thing.
                 if(!windowContains(Packet.getPacketIndexWithPacket(packet))) {
-                    
-                    //System.out.print("Not in window... ");
-                    //System.out.println("| " + window[0] + " | " + window[1] + " | " + window[2] + " | " + window[3] + " | " + window[4] + " |");
-                
+
                     // If window is not full.
                     if(!windowFull()) {
                         
@@ -187,9 +182,7 @@ public class Node {
 
                             // If the first packet is acknowledged, shift window and send the next packet.
                             if(Packet.packets.get(window[0])[1].equals("1")) {
-                                
-                                //System.out.println("Acked");
-                                
+
                                 long timeout2 = System.currentTimeMillis() + 350;
                                 while(timeout2 > System.currentTimeMillis()) {
 
@@ -199,10 +192,6 @@ public class Node {
                                         Thread.sleep(100);
                                     } catch(InterruptedException e) {}
                                 }
-
-                                //windowShift(1);
-                                //windowAdd(Packet.getPacketIndexWithPacket(packet));
-                                //resendWindow = false;
                                 
                                 // Check how many consecutive packets have been acknowledged.
                                 int numAck = 1;
@@ -225,7 +214,6 @@ public class Node {
                             } else {
 
                                 for(int i = 0; i < window.length; i++) {
-                                    //System.out.println("\n\nResend: " + window[i]);
                                     send(Packet.packets.get(window[i])[0], 0);
                                 }
                                 
@@ -464,9 +452,7 @@ public class Node {
      */
     private boolean windowContains(int id) {
         
-        //System.out.println("Checking Packet ID: " + id);
         for(int i = 0; i < window.length; i++) {
-            //System.out.println("Checked Packet ID: " + window[i]);
             if(window[i] == id) {
                 return true;
             }

@@ -24,7 +24,6 @@ public class Receiver implements Runnable {
     public void run() {
         
         while(running && (server || client)) {
-            //byte[] receive = new byte[1024];
             byte[] receive = new byte[1074];
             
             try {

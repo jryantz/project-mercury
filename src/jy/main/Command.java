@@ -40,9 +40,6 @@ public class Command {
             case "packet-list":
                 packetList();
                 break;
-//            case "send":
-//                send(args[1]);
-//                break;
             case "quit":
                 quit();
                 break;
@@ -59,7 +56,6 @@ public class Command {
         System.out.println("file-list: print a list of all files in the current directory");
         System.out.println("file-send [Integer fileId]: sends a file - files can be selected with file-list");
         System.out.println("packet-list: print a list of all packets sent by this node");
-//        System.out.println("send [String packet]: send a message with the node");
         System.out.println("quit: exit the program");
         
     } // end list
@@ -146,7 +142,7 @@ public class Command {
         System.out.println("\nDrop Rate: " + (Math.round(calcDrop * 100.0) / 100.0) + "%");
         
         // End execution.
-        System.exit(0);
+        //System.exit(0);
         
     }
     
@@ -174,22 +170,6 @@ public class Command {
         }
         
     }
-    
-//    private static void send(String packet) {
-//        
-//        if(packet.length() <= 0) {
-//            packet = "<no message>";
-//        }
-//        
-//        String binary = Convert.toBinary(packet.getBytes());
-//        
-//        if(binary.length() > 1024) {
-//            System.out.println("Message too large.");
-//        } else {
-//            Main.node.send(Packet.data(binary), 0);
-//        }
-//        
-//    } // end send
     
     private static void quit() {
         

@@ -22,7 +22,6 @@ public class Main {
      */
     public static void main(String[] args) {
         
-        //test();
                 
         boolean typeCont = true;
         int type = 0;
@@ -60,33 +59,6 @@ public class Main {
         
         node = new Node(type, drop);
         
-        try {
-            Thread.sleep(300);
-        } catch(InterruptedException e) {}
-        
-        boolean mainCont = true;
-        
-        Command.run("commands");
-        
-        while(mainCont) {
-            Scanner input = new Scanner(new InputStreamReader(System.in));
-            
-            Command.run(input.nextLine());
-        }
-        
     } // end main
-    
-    /**
-     * A test method for trying different use-cases.
-     */
-    private static void test() {
-        
-        Packet.packAll("test-content-provided.txt");
-        
-//        for(int i = 0; i < Packet.packets.size(); i++) {
-//            System.out.println("[" + i + " - " + Packet.packets.get(i)[0].length() + "]: " + Packet.packets.get(i)[0]);
-//        }
-        
-    } // end test
     
 } // end class Main

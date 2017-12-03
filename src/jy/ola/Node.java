@@ -1,15 +1,14 @@
 package jy.ola;
 
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
 import java.net.UnknownHostException;
-import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import jy.gui.Starter;
 
 /**
  *
@@ -40,6 +39,9 @@ public class Node {
     
     public static InetAddress remAddr;
     public static int remPort = 0;
+    
+    public static String guiIPChoice = "";
+    public static String guiPortChoice = "";
 
     public Node(int mode, int drop) {
         
@@ -84,19 +86,28 @@ public class Node {
             Logger.getLogger(Node.class.getName()).log(Level.SEVERE, null, e);
         }
         
+        Starter.setPortServerField(locPort + "");
+        
         try {
             locAddr = InetAddress.getLocalHost();
         } catch(UnknownHostException e) {
             Logger.getLogger(Node.class.getName()).log(Level.SEVERE, null, e);
         }
         
-        System.out.println("IP: " + locAddr.getHostAddress());
-        System.out.println("Port: " + locPort);
-        System.out.println("*** COMMUNICATION STARTED ***");
+        Starter.setIPServerField(locAddr + "");
+        
+        //System.out.println("IP: " + locAddr.getHostAddress());
+        //System.out.println("Port: " + locPort);
+        //System.out.println("*** COMMUNICATION STARTED ***");
+        
+        Starter.updateAlertLabel("Communication Started!");
         
         receive();
         waiting();
+        
         lock = false;
+        
+        Starter.updateAlertLabel("Client Connected!");
         
     } // end server
     
@@ -105,10 +116,17 @@ public class Node {
      */
     private void client() {
         
-        Scanner input = new Scanner(new InputStreamReader(System.in));
+        boolean ipCont = true;
+        String ip = "";
         
-        System.out.print("Server IP: ");
-        String ip = input.nextLine();
+        while(ipCont) {
+            String choice = guiIPChoice;
+            
+            if(choice.matches("^((\\d){1,3}[.]){3}(\\d){1,3}$")) {
+                ip = choice;
+                ipCont = false;
+            }
+        }
         
         try {
             remAddr = InetAddress.getByName(ip);
@@ -116,8 +134,16 @@ public class Node {
             Logger.getLogger(Node.class.getName()).log(Level.SEVERE, null, e);
         }
         
-        System.out.print("Server Port: ");
-        remPort = input.nextInt();
+        boolean portCont = true;
+        
+        while(portCont) {
+            int choice = Integer.parseInt(guiPortChoice);
+            
+            if(choice > 0 && choice <= 65535) {
+                remPort = choice;
+                portCont = false;
+            }
+        }
         
         try {
             socket = new DatagramSocket();
@@ -125,11 +151,14 @@ public class Node {
             Logger.getLogger(Node.class.getName()).log(Level.SEVERE, null, e);
         }
         
-        System.out.println("Port: " + socket.getLocalPort());
-        System.out.println("*** COMMUNICATION STARTED ***");
+        //System.out.println("Port: " + socket.getLocalPort());
+        //System.out.println("*** COMMUNICATION STARTED ***");
         
         receive();
+        
         lock = false;
+        
+        Starter.updateAlertLabel("Communication Started!");
         
         // Send the first packet to the server to initialize the connection.
         send(Packet.ack(0), 1);

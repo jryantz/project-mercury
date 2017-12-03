@@ -2,7 +2,8 @@ package jy.main;
 
 import java.io.InputStreamReader;
 import java.util.Scanner;
-
+import javax.swing.SwingUtilities;
+import jy.gui.Starter;
 import jy.ola.Node;
 import jy.ola.Packet;
 
@@ -14,6 +15,9 @@ import jy.ola.Packet;
 public class Main {
     
     public static Node node;
+    
+    public static String guiNodeChoice = "";
+    public static int guiDropChoice = -1;
 
     /**
      * The main method for the beginning of execution.
@@ -22,15 +26,15 @@ public class Main {
      */
     public static void main(String[] args) {
         
+        SwingUtilities.invokeLater(() -> {
+            new Starter().setVisible(true);
+        });
                 
         boolean typeCont = true;
         int type = 0;
         
         while(typeCont) {
-            Scanner input = new Scanner(new InputStreamReader(System.in));
-            
-            System.out.print("Server[s] / Client[c]: ");
-            String choice = input.nextLine();
+            String choice = guiNodeChoice;
             
             if(choice.equalsIgnoreCase("s")) {
                 type = 0;
@@ -47,12 +51,10 @@ public class Main {
         int drop = 0;
         
         while(dropCont) {
-            Scanner input = new Scanner(new InputStreamReader(System.in));
+            int choice = guiDropChoice;
             
-            System.out.print("Drop Rate[0-99]: ");
-            drop = input.nextInt();
-            
-            if(drop >= 0 && drop <= 99) {
+            if(choice >= 0 && choice <= 99) {
+                drop = choice;
                 dropCont = false;
             }
         }

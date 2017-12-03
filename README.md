@@ -10,11 +10,10 @@ If you would like to open the project in another IDE, just clone the `.java` fil
 
 ## Packet Structure
 
-Not drawn to scale.
-
-`
-|‾‾‾‾‾‾‾‾‾‾‾‾|‾‾‾‾‾‾‾‾|‾‾‾‾‾‾‾‾|‾‾‾‾‾‾‾‾|‾‾‾‾‾‾‾‾‾‾‾‾|‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾|
-| Sequence # | Length | Flag 1 | Flag 2 |   Flag 3   |                           Payload                            |
-|    32 b    |  10 b  |  2 b   |  2 b   |    4 b     |                           1024 b                             |
-|____________|________|________|________|____________|______________________________________________________________|
-`
+- 0-31 Sequence Number
+- 32-41 Length
+- 42-49 Flags
+    - 42-43 Packet Type
+    - 44-45 Protocol Type
+    - 46-49 Window Size
+- 50-1023 Payload

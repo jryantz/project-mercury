@@ -1,6 +1,8 @@
 package jy.main;
 
 import java.util.ArrayList;
+import javax.swing.SwingUtilities;
+import jy.gui.Statistics;
 import jy.ola.Node;
 import jy.ola.Packet;
 import jy.tools.File;
@@ -140,6 +142,10 @@ public class Command {
         double calcDrop = (double)Node.statistics[1] / (double)Node.statistics[0] * 100.0;
         
         System.out.println("\nDrop Rate: " + (Math.round(calcDrop * 100.0) / 100.0) + "%");
+        
+        // Start the statistics window and set the values on the GUI.
+        new Statistics().setVisible(true);
+        Statistics.setData(((etime - stime) / 1000 + "s"), (Node.statistics[0] + ""), ((Node.statistics[0] - Node.statistics[1]) + ""), (Node.statistics[1] + ""), (Packet.packets.size() + ""), ((Math.round(calcDrop * 100.0) / 100.0) + "%"));
         
         // End execution.
         //System.exit(0);

@@ -39,7 +39,7 @@ public class Sender extends JFrame {
         createView();
         
         setTitle("Project Mercury");
-        setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         pack();
         setLocationRelativeTo(locationComp);
         setResizable(false);
